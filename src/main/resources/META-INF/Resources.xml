@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Unwrap_Error">Unwrap class error! Expected: {0}, actual: {1}</entry>
+    <entry key="Invalid_Page_Parameters">Invalid pager parameters! Expected positive integer values for pageNumber and pageSize.</entry>
+</properties>

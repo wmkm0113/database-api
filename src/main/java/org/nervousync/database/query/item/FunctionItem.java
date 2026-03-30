@@ -1,0 +1,110 @@
+/*
+ * Licensed to the Nervousync Studio (NSYC) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.nervousync.database.query.item;
+
+import jakarta.xml.bind.annotation.*;
+import org.nervousync.database.enumerations.ItemType;
+import org.nervousync.database.query.core.BaseParameter;
+import org.nervousync.database.query.core.BaseItem;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * <h2 class="en-US">Query function information defines</h2>
+ * <h2 class="zh-CN">查询数据函数信息定义</h2>
+ *
+ * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
+ * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
+ */
+@XmlType(name = "function_item", namespace = "https://nervousync.org/schemas/database")
+@XmlAccessorType(XmlAccessType.NONE)
+public final class FunctionItem extends BaseItem {
+
+	/**
+	 * <span class="en-US">Serial version UID</span>
+	 * <span class="zh-CN">序列化UID</span>
+	 */
+	private static final long serialVersionUID = 4463684389449026498L;
+
+	/**
+	 * <span class="en-US">Function name</span>
+	 * <span class="zh-CN">函数名</span>
+	 */
+	@XmlElement(name = "function_name")
+	private String functionName = null;
+	/**
+	 * <span class="en-US">Function arguments array</span>
+	 * <span class="zh-CN">函数参数数组</span>
+	 */
+	@XmlElementWrapper(name = "function_parameter_list")
+	private List<BaseParameter> functionParameters;
+
+	/**
+	 * <h3 class="en-US">Constructor method for query function information define</h3>
+	 * <h3 class="zh-CN">查询数据函数信息定义的构造方法</h3>
+	 */
+	public FunctionItem() {
+		super(ItemType.FUNCTION);
+		this.functionParameters = new ArrayList<>();
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for function name</h3>
+	 * <h3 class="zh-CN">函数名的Getter方法</h3>
+	 *
+	 * @return <span class="en-US">Function name</span>
+	 * <span class="zh-CN">函数名</span>
+	 */
+	public String getFunctionName() {
+		return this.functionName;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for function name</h3>
+	 * <h3 class="zh-CN">函数名的Setter方法</h3>
+	 *
+	 * @param functionName <span class="en-US">Function name</span>
+	 *                     <span class="zh-CN">函数名</span>
+	 */
+	public void setFunctionName(final String functionName) {
+		this.functionName = functionName;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the function arguments array</h3>
+	 * <h3 class="zh-CN">函数参数数组的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Function arguments array</span>
+	 * <span class="zh-CN">函数参数数组</span>
+	 */
+	public List<BaseParameter> getFunctionParameters() {
+		return this.functionParameters;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the function arguments array</h3>
+	 * <h3 class="zh-CN">函数参数数组的 Setter 方法</h3>
+	 *
+	 * @param functionParameters <span class="en-US">Function arguments array</span>
+	 *                           <span class="zh-CN">函数参数数组</span>
+	 */
+	public void setFunctionParameters(final List<BaseParameter> functionParameters) {
+		this.functionParameters = functionParameters;
+	}
+}

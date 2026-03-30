@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="0x00DB00000001">Unwrap_Error</entry>
+    <entry key="0x00DB00000002">Invalid_Page_Parameters</entry>
+</properties>
