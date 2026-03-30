@@ -1,0 +1,30 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "database",
+  "alias": {
+    "en": "en-US",
+    "zh": "zh-CN"
+  },
+  "errors": {
+    "0x00DB00000001": "Unwrap_Error",
+    "0x00DB00000002": "Invalid_Page_Parameters"
+  },
+  "messages": {
+    "en-US": {
+      "Unwrap_Error": {
+        "pattern": "Unwrap class error! Expected: {0}, actual: {1}"
+      },
+      "Invalid_Page_Parameters": {
+        "pattern": "Invalid pager parameters! Expected positive integer values for pageNumber and pageSize."
+      }
+    },
+    "zh-CN": {
+      "Unwrap_Error": {
+        "pattern": "转换类型出错！预期类型：{0}，实际类型：{1}"
+      },
+      "Invalid_Page_Parameters": {
+        "pattern": "分页参数无效！页数和每页最大记录数必须为正整数。"
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+# 数据库 API
+
+[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/database-api?color=green&label=Release)](https://mvnrepository.com/artifact/org.nervousync/database-api)
+![Maven Snapshot](https://img.shields.io/maven-metadata/v?label=Snapshot&metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fnervousync%2Fdatabase-api%2Fmaven-metadata.xml)
+[![License](https://img.shields.io/github/license/wmkm0113/database-api)](https://github.com/wmkm0113/database-api/blob/mainline/LICENSE)
+![Language](https://img.shields.io/badge/language-Java-green)
+[![Twitter:wmkm0113](https://img.shields.io/twitter/follow/wmkm0113?label=Follow)](https://twitter.com/wmkm0113)
+
+[English](README.md)
+简体中文
+[繁體中文](README_zh_TW.md)
+
+这是一个用于数据库操作的 API 包。
+
+## 目录
+
+* [JDK版本](#JDK版本)
+* [生命周期](#生命周期)
+* [贡献与反馈](#贡献与反馈)
+* [捐款](#捐款)
+
+## JDK版本
+**编译：** OpenJDK 11   
+**运行：** OpenJDK 11+ 或兼容版本   
+**Jakarta EE平台：** 10
+
+## 生命周期
+**功能冻结：** 2026年12月31日   
+**安全更新：** 2029年12月31日
+
+## 贡献与反馈
+
+欢迎各位朋友将此文档及项目中的提示信息、错误信息等翻译为更多语言，以帮助更多的使用者更好地了解与使用此工具包。   
+如果在使用过程中发现问题或需要改进、添加相关功能，请提交issue到本项目或发送电子邮件到[wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=bugs_and_features)   
+为了更好地沟通，请在提交issue或发送电子邮件时，写明如下信息：   
+1、目的是：发现Bug/功能改进/添加新功能   
+2、请粘贴以下信息（如果存在）：传入数据，预期结果，错误堆栈信息   
+3、您认为可能是哪里的代码出现问题（如提供可以帮助我们尽快地找到并解决问题）   
+如果您提交的是添加新功能的相关信息，请确保需要添加的功能是一般性的通用需求，即添加的新功能可以帮助到大多数使用者。
+
+如果您需要添加的是定制化的特殊需求，我将收取一定的定制开发费用，具体费用金额根据定制化的特殊需求的工作量进行评估。   
+定制化特殊需求请直接发送电子邮件到[wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=payment_features)
+，同时请尽量在邮件中写明您可以负担的开发费用预算金额。
+
+## 捐款
+为了支持此项目，您可以向以下地址捐款：
+
+* 比特币地址: bc1q3nfj9gafu3x25ea260g7cyhh5s9gnx347tznsf
+* 以太坊地址: 0x849D143e943bAA6Dd078d02ebAEc205E2b00a7CA
+* Solana 地址: 4Fvujk8DEkVAtYwzim1vrobNm4s72Ra6Xrsu83v2hqE2
+* BNB 地址: 0x849D143e943bAA6Dd078d02ebAEc205E2b00a7CA
