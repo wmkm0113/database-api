@@ -29,6 +29,7 @@ import org.nervousync.database.query.core.BaseParameter;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:45:29 $
  */
 @XmlType(name = "column_parameter", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "column_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class ColumnParameter extends BaseParameter {
 

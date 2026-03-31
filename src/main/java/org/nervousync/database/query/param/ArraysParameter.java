@@ -29,6 +29,7 @@ import org.nervousync.database.query.core.BaseParameter;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 18:05:28 $
  */
 @XmlType(name = "arrays_parameter", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "arrays_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class ArraysParameter extends BaseParameter {
 
@@ -63,7 +64,7 @@ public final class ArraysParameter extends BaseParameter {
 	 */
 	public ArraysParameter(final Object[] arrayObject) {
 		super(ItemType.ARRAY);
-		this.arrayObject = arrayObject;
+		this.setArrayObject(arrayObject);
 	}
 
 	/**

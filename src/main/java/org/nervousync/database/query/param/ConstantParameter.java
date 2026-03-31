@@ -29,6 +29,7 @@ import org.nervousync.database.query.core.BaseParameter;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:46:31 $
  */
 @XmlType(name = "constant_parameter", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "constant_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class ConstantParameter extends BaseParameter {
 

@@ -29,6 +29,7 @@ import org.nervousync.database.query.core.BaseFrom;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
 @XmlType(name = "from_table", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "from_table", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class FromTable extends BaseFrom {
 

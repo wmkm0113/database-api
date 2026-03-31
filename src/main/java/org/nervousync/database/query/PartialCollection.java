@@ -17,9 +17,7 @@
 
 package org.nervousync.database.query;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.query.result.ResultMap;
 
 import java.io.Serializable;
@@ -33,7 +31,8 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0 $ $Date: Jan 13, 2010 4:07:14 PM $
  */
-@XmlRootElement(name = "partial_collection")
+@XmlType(name = "partial_collection", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "partial_collection", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class PartialCollection implements Serializable {
 
@@ -47,21 +46,26 @@ public final class PartialCollection implements Serializable {
 	 * <span class="en-US">Collection of query results</span>
 	 * <span class="zh-CN">结果集列表</span>
 	 */
+	@XmlElement(name = "result_map")
+	@XmlElementWrapper(name = "result_list")
 	private List<ResultMap> resultList;
 	/**
 	 * <span class="en-US">Current page number</span>
 	 * <span class="zh-CN">当前页码</span>
 	 */
+	@XmlElement(name = "page_number")
 	private Integer pageNumber;
 	/**
 	 * <span class="en-US">Limit size of per page</span>
 	 * <span class="zh-CN">每页最大条数</span>
 	 */
+	@XmlElement(name = "page_size")
 	private Integer pageSize;
 	/**
-	 * <span class="en-US">Total number of elements in the query</span>
+	 * <span class="en-US">Total count of the query</span>
 	 * <span class="zh-CN">查询总记录数</span>
 	 */
+	@XmlElement(name = "total_count")
 	private Long totalCount;
 
 	/**

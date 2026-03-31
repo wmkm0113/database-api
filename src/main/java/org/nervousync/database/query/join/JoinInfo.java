@@ -31,8 +31,7 @@ import java.io.Serializable;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Feb 17, 2021 16:35:51 $
  */
-@XmlType(name = "join_info", namespace = "https://nervousync.org/schemas/brain")
-@XmlRootElement(name = "join_info", namespace = "https://nervousync.org/schemas/brain")
+@XmlType(name = "join_info", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class JoinInfo implements Serializable {
 	/**

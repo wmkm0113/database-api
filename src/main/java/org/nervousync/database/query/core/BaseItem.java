@@ -18,9 +18,10 @@
 package org.nervousync.database.query.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.beans.WrapperImpl;
 import org.nervousync.database.enumerations.ItemType;
+import org.nervousync.database.query.item.*;
 
 import java.sql.Types;
 
@@ -31,6 +32,9 @@ import java.sql.Types;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:30:54 $
  */
+@XmlSeeAlso({CalculateItem.class, ColumnItem.class, ConstantItem.class, FunctionItem.class, SubQueryItem.class})
+@XmlTransient
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class BaseItem extends WrapperImpl {
 
 	/**

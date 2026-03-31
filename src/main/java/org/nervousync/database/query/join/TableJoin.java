@@ -17,10 +17,7 @@
 
 package org.nervousync.database.query.join;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.CategoryType;
 import org.nervousync.database.query.core.BaseJoin;
 
@@ -32,6 +29,7 @@ import org.nervousync.database.query.core.BaseJoin;
  * @version $Revision: 1.0.0 $ $Date: Jul 30, 2023 15:57:33 $
  */
 @XmlType(name = "table_join", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "table_join", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class TableJoin extends BaseJoin {
 

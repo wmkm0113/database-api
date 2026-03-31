@@ -39,6 +39,7 @@ import java.util.List;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
 @XmlType(name = "calculate_item", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "calculate_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class CalculateItem extends BaseItem {
 
@@ -65,13 +66,13 @@ public final class CalculateItem extends BaseItem {
 	 * <span class="en-US">List of query items participating in the calculation</span>
 	 * <span class="zh-CN">参与计算的查询项信息列表</span>
 	 */
-	@XmlElementWrapper(name = "calculate_parameter_list")
 	@XmlElementRefs({
 			@XmlElementRef(name = "calculate_parameter", type = CalculateParameter.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElementRef(name = "constant_parameter", type = ConstantParameter.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElementRef(name = "column_parameter", type = ColumnParameter.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElementRef(name = "function_parameter", type = FunctionParameter.class, namespace = "https://nervousync.org/schemas/database")
 	})
+	@XmlElementWrapper(name = "calculate_parameter_list")
 	private List<BaseParameter> calculateParameters;
 
 	/**

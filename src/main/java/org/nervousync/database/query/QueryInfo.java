@@ -42,6 +42,7 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
  */
+@XmlType(name = "query_info", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "query_info", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class QueryInfo implements Serializable {
@@ -62,7 +63,7 @@ public final class QueryInfo implements Serializable {
 			@XmlElement(name = "column_item", type = ColumnItem.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "constant_item", type = ConstantItem.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "function_item", type = FunctionItem.class, namespace = "https://nervousync.org/schemas/database"),
-			@XmlElement(name = "sub_query_item", type = SubQueryItem.class, namespace = "https://nervousync.org/schemas/database")
+			@XmlElement(name = "query_item", type = SubQueryItem.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "item_list")
 	private List<BaseItem> queryItems = new ArrayList<>();
@@ -71,7 +72,7 @@ public final class QueryInfo implements Serializable {
 	 * <span class="zh-CN">查询来源信息</span>
 	 */
 	@XmlElements({
-			@XmlElement(name = "from_sub_query", type = FromQuery.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "from_query", type = FromQuery.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "from_table", type = FromTable.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	private BaseFrom queryFrom;
@@ -83,10 +84,10 @@ public final class QueryInfo implements Serializable {
 			@XmlElement(name = "column_condition", type = ColumnCondition.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "group_condition", type = GroupCondition.class, namespace = "https://nervousync.org/schemas/database")
 	})
-	@XmlElementWrapper(name = "condition_list")
+	@XmlElementWrapper(name = "where_list")
 	private List<BaseCondition> whereClause;
 	/**
-	 * <span class="en-US">Identify key</span>
+	 * <span class="en-US">Group column identify key list</span>
 	 * <span class="zh-CN">分组识别代码列表</span>
 	 */
 	@XmlElement(name = "group_column", type = GroupColumn.class, namespace = "https://nervousync.org/schemas/database")
@@ -100,7 +101,7 @@ public final class QueryInfo implements Serializable {
 			@XmlElement(name = "column_condition", type = ColumnCondition.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "group_condition", type = GroupCondition.class, namespace = "https://nervousync.org/schemas/database")
 	})
-	@XmlElementWrapper(name = "condition_list")
+	@XmlElementWrapper(name = "having_list")
 	private List<BaseCondition> havingClause;
 	/**
 	 * <span class="en-US">Query order by columns' list</span>

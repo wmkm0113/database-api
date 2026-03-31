@@ -31,6 +31,7 @@ import org.nervousync.database.query.core.BaseParameter;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:44:57 $
  */
 @XmlType(name = "query_parameter", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "query_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class QueryParameter extends BaseParameter {
 
@@ -44,7 +45,7 @@ public final class QueryParameter extends BaseParameter {
 	 * <span class="en-US">Sub-query information</span>
 	 * <span class="zh-CN">子查询信息</span>
 	 */
-	@XmlElement(name = "query_info")
+	@XmlElement(name = "sub_query")
 	private QueryInfo queryInfo;
 	/**
 	 * <span class="en-US">Function name of sub-query</span>

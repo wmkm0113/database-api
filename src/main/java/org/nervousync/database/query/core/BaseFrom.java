@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.beans.WrapperImpl;
 import org.nervousync.database.enumerations.CategoryType;
+import org.nervousync.database.query.from.FromQuery;
+import org.nervousync.database.query.from.FromTable;
 import org.nervousync.database.query.join.QueryJoin;
 import org.nervousync.database.query.join.TableJoin;
 
@@ -33,6 +35,7 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:30:54 $
  */
+@XmlSeeAlso({FromTable.class, FromQuery.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class BaseFrom extends WrapperImpl {

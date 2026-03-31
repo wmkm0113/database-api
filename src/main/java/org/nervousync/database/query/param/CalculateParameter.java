@@ -30,6 +30,7 @@ import org.nervousync.database.query.item.CalculateItem;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 18:05:28 $
  */
 @XmlType(name = "calculate_parameter", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "calculate_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class CalculateParameter extends BaseParameter {
 

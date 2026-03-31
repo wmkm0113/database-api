@@ -23,6 +23,8 @@ import org.nervousync.database.beans.WrapperImpl;
 import org.nervousync.database.enumerations.CategoryType;
 import org.nervousync.database.enumerations.JoinType;
 import org.nervousync.database.query.join.JoinInfo;
+import org.nervousync.database.query.join.QueryJoin;
+import org.nervousync.database.query.join.TableJoin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +37,7 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 30, 2023 15:57:33 $
  */
+@XmlSeeAlso({TableJoin.class, QueryJoin.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class BaseJoin extends WrapperImpl {

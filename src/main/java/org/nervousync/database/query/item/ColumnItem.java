@@ -29,6 +29,7 @@ import org.nervousync.database.query.core.BaseItem;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
 @XmlType(name = "column_item", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "column_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class ColumnItem extends BaseItem {
 
@@ -157,11 +158,5 @@ public final class ColumnItem extends BaseItem {
 	 */
 	public void setDistinct(final boolean distinct) {
 		this.distinct = distinct;
-	}
-
-	public boolean match(final String databaseName, final String tableName, final String columnName) {
-		return this.databaseName.equalsIgnoreCase(databaseName)
-				&& this.tableName.equalsIgnoreCase(tableName)
-				&& this.columnName.equalsIgnoreCase(columnName);
 	}
 }

@@ -18,9 +18,13 @@
 package org.nervousync.database.query.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlTransient;
 import org.nervousync.database.beans.WrapperImpl;
 import org.nervousync.database.enumerations.ItemType;
+import org.nervousync.database.query.param.*;
 
 /**
  * <h2 class="en-US">Abstract class for parameter information define</h2>
@@ -29,7 +33,9 @@ import org.nervousync.database.enumerations.ItemType;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:46 $
  */
+@XmlSeeAlso({ArraysParameter.class, CalculateParameter.class, ColumnParameter.class, ConstantParameter.class, FunctionParameter.class, QueryParameter.class, RangesParameter.class})
 @XmlTransient
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class BaseParameter extends WrapperImpl {
 
 	/**

@@ -32,6 +32,7 @@ import org.nervousync.database.query.param.*;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 19:12:02 $
  */
 @XmlType(name = "column_condition", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "column_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class ColumnCondition extends BaseCondition {
 

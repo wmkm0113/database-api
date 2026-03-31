@@ -17,10 +17,7 @@
 
 package org.nervousync.database.query.from;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.CategoryType;
 import org.nervousync.database.query.QueryInfo;
 import org.nervousync.database.query.core.BaseFrom;
@@ -33,6 +30,7 @@ import org.nervousync.database.query.core.BaseFrom;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
 @XmlType(name = "from_query", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "from_query", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class FromQuery extends BaseFrom {
 

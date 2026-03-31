@@ -19,6 +19,7 @@ package org.nervousync.database.query.pager;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 import java.io.Serializable;
@@ -44,11 +45,13 @@ public final class PageLimit implements Serializable {
 	 * <span class="en-US">Current page number</span>
 	 * <span class="zh-CN">当前页码</span>
 	 */
+	@XmlElement(name = "page_number")
 	private Integer pageNumber;
 	/**
 	 * <span class="en-US">Limit size of per page</span>
 	 * <span class="zh-CN">每页最大条数</span>
 	 */
+	@XmlElement(name = "page_size")
 	private Integer pageSize;
 
 	/**

@@ -30,6 +30,7 @@ import org.nervousync.database.query.item.FunctionItem;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:44:57 $
  */
 @XmlType(name = "function_parameter", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "function_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class FunctionParameter extends BaseParameter {
 

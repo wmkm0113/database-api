@@ -785,6 +785,17 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		}
 
 		/**
+		 * <h3 class="en-US">Query condition match function information builder</h3>
+		 * <h3 class="zh-CN">查询匹配函数构建器</h3>
+		 *
+		 * @return <span class="en-US">Current builder instance object</span>
+		 * <span class="zh-CN">当前构建器实例对象</span>
+		 */
+		public ParametersBuilder.FunctionParameterBuilder<ColumnConditionBuilder<P>> matchFunction() {
+			return new ParametersBuilder.FunctionParameterBuilder<>(this);
+		}
+
+		/**
 		 * <h3 class="en-US">Condition matches the scalar sub-query information builder</h3>
 		 * <h3 class="zh-CN">匹配标量子查询构建器</h3>
 		 *

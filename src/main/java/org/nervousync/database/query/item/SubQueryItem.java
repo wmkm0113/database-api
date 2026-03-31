@@ -30,6 +30,7 @@ import org.nervousync.database.query.core.BaseItem;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
 @XmlType(name = "query_item", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "query_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class SubQueryItem extends BaseItem {
 

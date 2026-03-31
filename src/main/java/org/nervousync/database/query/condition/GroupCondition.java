@@ -32,6 +32,7 @@ import java.util.List;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 19:12:02 $
  */
 @XmlType(name = "group_condition", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "group_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class GroupCondition extends BaseCondition {
 

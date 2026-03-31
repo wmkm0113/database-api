@@ -21,6 +21,10 @@ import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.ItemType;
 import org.nervousync.database.query.core.BaseParameter;
 import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.param.CalculateParameter;
+import org.nervousync.database.query.param.ColumnParameter;
+import org.nervousync.database.query.param.ConstantParameter;
+import org.nervousync.database.query.param.FunctionParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,7 @@ import java.util.List;
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
 @XmlType(name = "function_item", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "function_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class FunctionItem extends BaseItem {
 
@@ -52,6 +57,12 @@ public final class FunctionItem extends BaseItem {
 	 * <span class="en-US">Function arguments array</span>
 	 * <span class="zh-CN">函数参数数组</span>
 	 */
+	@XmlElementRefs({
+			@XmlElementRef(name = "calculate_parameter", type = CalculateParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElementRef(name = "constant_parameter", type = ConstantParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElementRef(name = "column_parameter", type = ColumnParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElementRef(name = "function_parameter", type = FunctionParameter.class, namespace = "https://nervousync.org/schemas/database")
+	})
 	@XmlElementWrapper(name = "function_parameter_list")
 	private List<BaseParameter> functionParameters;
 

@@ -122,7 +122,7 @@ public abstract class FromBuilder<P extends ParentBuilder, T extends BaseFrom> e
 		 * @return <span class="en-US">Query joins information lists builder instance object</span>
 		 * <span class="zh-CN">查询关联信息列表构建器构建器实例对象</span>
 		 */
-		JoinsBuilder<FromTableBuilder<P>> joins() {
+		public JoinsBuilder<FromTableBuilder<P>> joins() {
 			return new JoinsBuilder<>(this, this.joinList);
 		}
 

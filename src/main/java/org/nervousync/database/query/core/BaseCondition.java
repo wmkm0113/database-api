@@ -17,13 +17,12 @@
 
 package org.nervousync.database.query.core;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.beans.WrapperImpl;
 import org.nervousync.database.enumerations.ConditionType;
 import org.nervousync.database.enumerations.ConnectionCode;
+import org.nervousync.database.query.condition.ColumnCondition;
+import org.nervousync.database.query.condition.GroupCondition;
 
 /**
  * <h2 class="en-US">Abstract class for query condition information define</h2>
@@ -32,6 +31,7 @@ import org.nervousync.database.enumerations.ConnectionCode;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 19:10:21 $
  */
+@XmlSeeAlso({ColumnCondition.class, GroupCondition.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class BaseCondition extends WrapperImpl {
