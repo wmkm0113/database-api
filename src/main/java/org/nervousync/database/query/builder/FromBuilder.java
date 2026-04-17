@@ -20,8 +20,8 @@ package org.nervousync.database.query.builder;
 import org.nervousync.builder.AbstractBuilder;
 import org.nervousync.builder.ParentBuilder;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseFrom;
-import org.nervousync.database.query.core.BaseJoin;
+import org.nervousync.database.query.core.AbstractFrom;
+import org.nervousync.database.query.core.AbstractJoin;
 import org.nervousync.database.query.from.FromQuery;
 import org.nervousync.database.query.from.FromTable;
 import org.nervousync.exceptions.builder.BuilderException;
@@ -40,7 +40,7 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
  */
-public abstract class FromBuilder<P extends ParentBuilder, T extends BaseFrom> extends AbstractBuilder<P, T> {
+public abstract class FromBuilder<P extends ParentBuilder, T extends AbstractFrom> extends AbstractBuilder<P, T> {
 
 	/**
 	 * <span class="en-US">Item alias name</span>
@@ -51,7 +51,7 @@ public abstract class FromBuilder<P extends ParentBuilder, T extends BaseFrom> e
 	 * <span class="en-US">Related query information list</span>
 	 * <span class="zh-CN">关联查询信息列表</span>
 	 */
-	protected List<BaseJoin> joinList = new ArrayList<>();
+	protected List<AbstractJoin> joinList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Constructor method for the query from information builder</h3>

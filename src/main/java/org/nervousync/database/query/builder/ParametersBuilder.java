@@ -23,7 +23,7 @@ import org.nervousync.builder.AbstractBuilder;
 import org.nervousync.builder.ParentBuilder;
 import org.nervousync.database.enumerations.CalculateCode;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseParameter;
+import org.nervousync.database.query.core.AbstractParameter;
 import org.nervousync.database.query.item.CalculateItem;
 import org.nervousync.database.query.item.FunctionItem;
 import org.nervousync.database.query.param.*;
@@ -49,7 +49,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 	 * <span class="zh-CN">参数列表</span>
 	 */
 	@Nonnull
-	private final List<BaseParameter> parameterList = new ArrayList<>();
+	private final List<AbstractParameter> parameterList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Constructor method for the function parameters information list builder</h3>
@@ -60,7 +60,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @param parameterList <span class="en-US">Parameter information list</span>
 	 *                      <span class="zh-CN">参数信息列表</span>
 	 */
-	public ParametersBuilder(final P parentBuilder, final List<BaseParameter> parameterList) {
+	public ParametersBuilder(final P parentBuilder, final List<AbstractParameter> parameterList) {
 		super(parentBuilder);
 		if (parameterList != null) {
 			this.parameterList.addAll(parameterList);
@@ -128,8 +128,8 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 
 	@Override
 	public void confirm(final Object object) {
-		if (object instanceof BaseParameter) {
-			this.parameterList.add((BaseParameter) object);
+		if (object instanceof AbstractParameter) {
+			this.parameterList.add((AbstractParameter) object);
 		}
 	}
 
@@ -152,7 +152,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 		 * <span class="zh-CN">参数信息列表</span>
 		 */
 		@Nonnull
-		private final List<BaseParameter> parameters;
+		private final List<AbstractParameter> parameters;
 
 		/**
 		 * <h3 class="en-US">Constructor method for the parameter information list</h3>
@@ -161,7 +161,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @param parameters <span class="en-US">Parameter information list</span>
 		 *                   <span class="zh-CN">参数信息列表</span>
 		 */
-		public Parameters(@Nonnull final List<BaseParameter> parameters) {
+		public Parameters(@Nonnull final List<AbstractParameter> parameters) {
 			this.parameters = parameters;
 		}
 
@@ -173,7 +173,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 		 * <span class="zh-CN">参数信息列表</span>
 		 */
 		@Nonnull
-		public List<BaseParameter> getParameters() {
+		public List<AbstractParameter> getParameters() {
 			return this.parameters;
 		}
 	}
@@ -189,7 +189,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:46 $
 	 */
-	public static abstract class ParameterBuilder<P extends ParentBuilder, T extends BaseParameter>
+	public static abstract class ParameterBuilder<P extends ParentBuilder, T extends AbstractParameter>
 			extends AbstractBuilder<P, T> {
 
 		/**
@@ -242,7 +242,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 		}
 
 		/**
-		 * <h3 class="en-US">Calculate item builder instance object</h3>
+		 * <h3 class="en-US">The calculate item builder instance object</h3>
 		 * <h3 class="zh-CN">计算项目构建器实例对象</h3>
 		 *
 		 * @param calculateCode <span class="en-US">Enumeration value of calculate code</span>
@@ -322,7 +322,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:46 $
 	 */
 	public static final class QueryParameterBuilder<P extends ParentBuilder>
-			extends ParameterBuilder<P, QueryParameter> {
+			extends ParameterBuilder<P, SubQueryParameter> {
 
 		/**
 		 * <h3 class="en-US">Constructor method for the sub-query parameter information builder</h3>
@@ -332,7 +332,7 @@ public final class ParametersBuilder<P extends ParentBuilder> extends AbstractBu
 		 *                      <span class="zh-CN">父构建器实例对象</span>
 		 */
 		QueryParameterBuilder(final P parentBuilder) {
-			super(parentBuilder, new QueryParameter());
+			super(parentBuilder, new SubQueryParameter());
 		}
 
 		/**

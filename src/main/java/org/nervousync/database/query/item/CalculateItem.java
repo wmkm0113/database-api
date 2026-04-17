@@ -20,8 +20,8 @@ package org.nervousync.database.query.item;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.CalculateCode;
 import org.nervousync.database.enumerations.ItemType;
-import org.nervousync.database.query.core.BaseItem;
-import org.nervousync.database.query.core.BaseParameter;
+import org.nervousync.database.query.core.AbstractItem;
+import org.nervousync.database.query.core.AbstractParameter;
 import org.nervousync.database.query.param.CalculateParameter;
 import org.nervousync.database.query.param.ColumnParameter;
 import org.nervousync.database.query.param.ConstantParameter;
@@ -41,7 +41,7 @@ import java.util.List;
 @XmlType(name = "calculate_item", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "calculate_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class CalculateItem extends BaseItem {
+public final class CalculateItem extends AbstractItem {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -73,7 +73,7 @@ public final class CalculateItem extends BaseItem {
 			@XmlElementRef(name = "function_parameter", type = FunctionParameter.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "calculate_parameter_list")
-	private List<BaseParameter> calculateParameters;
+	private List<AbstractParameter> calculateParameters;
 
 	/**
 	 * <h3 class="en-US">Constructor method for calculate result value information define</h3>
@@ -113,7 +113,7 @@ public final class CalculateItem extends BaseItem {
 	 * @return <span class="en-US">List of query items participating in the calculation</span>
 	 * <span class="zh-CN">参与计算的查询项信息列表</span>
 	 */
-	public List<BaseParameter> getCalculateParameters() {
+	public List<AbstractParameter> getCalculateParameters() {
 		return this.calculateParameters;
 	}
 
@@ -124,7 +124,7 @@ public final class CalculateItem extends BaseItem {
 	 * @param calculateParameters <span class="en-US">List of query items participating in the calculation</span>
 	 *                            <span class="zh-CN">参与计算的查询项信息列表</span>
 	 */
-	public void setCalculateParameters(final List<BaseParameter> calculateParameters) {
+	public void setCalculateParameters(final List<AbstractParameter> calculateParameters) {
 		if (calculateParameters != null && calculateParameters.stream()
 				.allMatch(abstractItem -> CALCULATE_ITEM_TYPES.contains(abstractItem.getItemType()))) {
 			this.calculateParameters = calculateParameters;

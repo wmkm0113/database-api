@@ -24,9 +24,8 @@ import org.nervousync.database.enumerations.ConditionCode;
 import org.nervousync.database.enumerations.ConnectionCode;
 import org.nervousync.database.enumerations.JoinType;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseJoin;
+import org.nervousync.database.query.core.AbstractJoin;
 import org.nervousync.database.query.join.JoinInfo;
-import org.nervousync.database.query.join.QueryJoin;
 import org.nervousync.database.query.join.TableJoin;
 import org.nervousync.exceptions.builder.BuilderException;
 
@@ -49,7 +48,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * <span class="zh-CN">关联查询信息列表</span>
 	 */
 	@Nonnull
-	private final List<BaseJoin> joinList = new ArrayList<>();
+	private final List<AbstractJoin> joinList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Constructor method for the query join information list builder</h3>
@@ -60,7 +59,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * @param joinList      <span class="en-US">Related query joins information lists</span>
 	 *                      <span class="zh-CN">关联查询信息列表</span>
 	 */
-	public JoinsBuilder(final P parentBuilder, final List<BaseJoin> joinList) {
+	public JoinsBuilder(final P parentBuilder, final List<AbstractJoin> joinList) {
 		super(parentBuilder);
 		if (joinList != null) {
 			this.joinList.addAll(joinList);
@@ -104,8 +103,8 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 
 	@Override
 	public void confirm(final Object object) {
-		if (object instanceof BaseJoin) {
-			this.joinList.add((BaseJoin) object);
+		if (object instanceof AbstractJoin) {
+			this.joinList.add((AbstractJoin) object);
 		}
 	}
 
@@ -129,7 +128,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * <span class="zh-CN">关联查询信息列表</span>
 		 */
 		@Nonnull
-		private final List<BaseJoin> joinList;
+		private final List<AbstractJoin> joinList;
 
 		/**
 		 * <h3 class="en-US">Constructor method for the query join information list</h3>
@@ -138,7 +137,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * @param joinList <span class="en-US">Related query joins information lists</span>
 		 *                 <span class="zh-CN">关联查询信息列表</span>
 		 */
-		public Joins(@Nonnull final List<BaseJoin> joinList) {
+		public Joins(@Nonnull final List<AbstractJoin> joinList) {
 			this.joinList = joinList;
 		}
 
@@ -150,7 +149,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * <span class="zh-CN">关联查询信息列表</span>
 		 */
 		@Nonnull
-		public List<BaseJoin> getJoinList() {
+		public List<AbstractJoin> getJoinList() {
 			return this.joinList;
 		}
 	}
@@ -166,7 +165,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
 	 */
-	public static abstract class JoinBuilder<P extends ParentBuilder, T extends BaseJoin>
+	public static abstract class JoinBuilder<P extends ParentBuilder, T extends AbstractJoin>
 			extends AbstractBuilder<P, T> {
 
 		/**
@@ -179,6 +178,11 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * <span class="zh-CN">关联列信息列表</span>
 		 */
 		private final List<JoinInfo> joinInfos = new ArrayList<>();
+		/**
+		 * <span class="en-US">Related query information list</span>
+		 * <span class="zh-CN">关联查询信息列表</span>
+		 */
+		protected List<AbstractJoin> joinList = new ArrayList<>();
 
 		/**
 		 * <h3 class="en-US">Constructor method for the abstract class of query join information builder</h3>
@@ -226,8 +230,16 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		}
 
 		@Override
+		public void confirm(final Object object) {
+			if (object instanceof JoinsBuilder.Joins) {
+				this.joinList = ((JoinsBuilder.Joins) object).getJoinList();
+			}
+		}
+
+		@Override
 		public T build() throws BuilderException {
 			this.queryJoin.setJoinInfos(this.joinInfos);
+			this.queryJoin.setJoinList(this.joinList);
 			return this.queryJoin;
 		}
 	}
@@ -244,7 +256,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	public static final class TableJoinBuilder<P extends ParentBuilder> extends JoinBuilder<P, TableJoin> {
 
 		/**
-		 * <h3 class="en-US">Private constructor method for the data table query joins information builder</h3>
+		 * <h3 class="en-US">Private constructor method for the data table query join information builder</h3>
 		 * <h3 class="zh-CN">数据表关联信息构建器的私有构造函数</h3>
 		 *
 		 * @param parentBuilder <span class="en-US">Parent builder instance object</span>
@@ -338,6 +350,17 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 			super.joinOn(connectionCode, conditionCode, joinKey, referenceKey);
 			return this;
 		}
+
+		/**
+		 * <h3 class="en-US">Query joins information lists builder</h3>
+		 * <h3 class="zh-CN">查询关联信息列表构建器构建器</h3>
+		 *
+		 * @return <span class="en-US">Query joins information lists builder instance object</span>
+		 * <span class="zh-CN">查询关联信息列表构建器构建器实例对象</span>
+		 */
+		JoinsBuilder<TableJoinBuilder<P>> joins() {
+			return new JoinsBuilder<>(this, this.joinList);
+		}
 	}
 
 	/**
@@ -349,7 +372,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
 	 */
-	public static final class QueryJoinBuilder<P extends ParentBuilder> extends JoinBuilder<P, QueryJoin> {
+	public static final class QueryJoinBuilder<P extends ParentBuilder> extends JoinBuilder<P, org.nervousync.database.query.join.QueryJoin> {
 
 		/**
 		 * <h3 class="en-US">Private constructor method for the sub-query join information builder</h3>
@@ -364,7 +387,7 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 */
 		public QueryJoinBuilder(final P parentBuilder, @Nonnull final JoinType joinType,
 		                        @Nonnull final String aliasName) {
-			super(parentBuilder, new QueryJoin(), aliasName);
+			super(parentBuilder, new org.nervousync.database.query.join.QueryJoin(), aliasName);
 			this.queryJoin.setJoinType(joinType);
 		}
 
@@ -450,6 +473,17 @@ public final class JoinsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		                              @Nonnull final String joinKey, @Nonnull final String referenceKey) {
 			super.joinOn(connectionCode, conditionCode, joinKey, referenceKey);
 			return this;
+		}
+
+		/**
+		 * <h3 class="en-US">Query joins information lists builder</h3>
+		 * <h3 class="zh-CN">查询关联信息列表构建器构建器</h3>
+		 *
+		 * @return <span class="en-US">Query joins information lists builder instance object</span>
+		 * <span class="zh-CN">查询关联信息列表构建器构建器实例对象</span>
+		 */
+		JoinsBuilder<QueryJoinBuilder<P>> joins() {
+			return new JoinsBuilder<>(this, this.joinList);
 		}
 
 		@Override

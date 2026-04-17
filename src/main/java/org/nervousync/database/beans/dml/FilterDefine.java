@@ -17,13 +17,16 @@
 
 package org.nervousync.database.beans.dml;
 
+import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.database.beans.match.BaseMatch;
-import org.nervousync.database.beans.match.impl.ColumnMatch;
-import org.nervousync.database.beans.match.impl.ConstantMatch;
+import org.nervousync.database.query.condition.ColumnCondition;
+import org.nervousync.database.query.condition.ExistCondition;
+import org.nervousync.database.query.condition.GroupCondition;
+import org.nervousync.database.query.core.AbstractCondition;
 import org.nervousync.database.query.from.FromTable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,18 +56,21 @@ public final class FilterDefine implements Serializable {
 	 * <span class="en-US">Match information list</span>
 	 * <span class="zh-CN">匹配信息列表</span>
 	 */
-	@XmlElementRefs({
-			@XmlElementRef(name = "column_match", type = ColumnMatch.class),
-			@XmlElementRef(name = "constant_match", type = ConstantMatch.class)
+	@Nonnull
+	@XmlElements({
+			@XmlElement(name = "column_condition", type = ColumnCondition.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "exist_condition", type = ExistCondition.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "group_condition", type = GroupCondition.class, namespace = "https://nervousync.org/schemas/database")
 	})
-	@XmlElementWrapper(name = "match_list")
-	private List<BaseMatch> matchList;
+	@XmlElementWrapper(name = "condition_list")
+	private List<AbstractCondition> conditionList;
 
 	/**
 	 * <h3 class="en-US">Constructor method for the data filter match define</h3>
 	 * <h3 class="zh-CN">数据查询匹配定义的构造方法</h3>
 	 */
 	public FilterDefine() {
+		this.conditionList = new ArrayList<>();
 	}
 
 	/**
@@ -96,18 +102,19 @@ public final class FilterDefine implements Serializable {
 	 * @return <span class="en-US">Match information list</span>
 	 * <span class="zh-CN">匹配信息列表</span>
 	 */
-	public List<BaseMatch> getMatchList() {
-		return this.matchList;
+	@Nonnull
+	public List<AbstractCondition> getConditionList() {
+		return this.conditionList;
 	}
 
 	/**
 	 * <h3 class="en-US">Setter method for the match information list</h3>
 	 * <h3 class="zh-CN">匹配信息列表的 Setter 方法</h3>
 	 *
-	 * @param matchList <span class="en-US">Match information list</span>
+	 * @param conditionList <span class="en-US">Match information list</span>
 	 *                  <span class="zh-CN">匹配信息列表</span>
 	 */
-	public void setMatchList(final List<BaseMatch> matchList) {
-		this.matchList = matchList;
+	public void setConditionList(final List<AbstractCondition> conditionList) {
+		this.conditionList = (conditionList == null) ? new ArrayList<>() : conditionList;
 	}
 }

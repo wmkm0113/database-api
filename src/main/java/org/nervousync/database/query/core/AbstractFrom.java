@@ -38,7 +38,7 @@ import java.util.List;
 @XmlSeeAlso({FromTable.class, FromQuery.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class BaseFrom extends WrapperImpl {
+public abstract class AbstractFrom extends WrapperImpl {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -68,7 +68,7 @@ public abstract class BaseFrom extends WrapperImpl {
 
 	})
 	@XmlElementWrapper(name = "join_list")
-	private List<BaseJoin> joinList;
+	private List<AbstractJoin> joinList;
 
 	/**
 	 * <h3 class="en-US">Protect constructor method for the abstract query from definition</h3>
@@ -77,7 +77,7 @@ public abstract class BaseFrom extends WrapperImpl {
 	 * @param categoryType <span class="en-US">Enumeration value of the query from type</span>
 	 *                     <span class="zh-CN">查询来源类型的枚举值</span>
 	 */
-	protected BaseFrom(final CategoryType categoryType) {
+	protected AbstractFrom(final CategoryType categoryType) {
 		this.categoryType = categoryType;
 	}
 
@@ -121,7 +121,7 @@ public abstract class BaseFrom extends WrapperImpl {
 	 * @return <span class="en-US">Related query information list</span>
 	 * <span class="zh-CN">关联查询信息列表</span>
 	 */
-	public List<BaseJoin> getJoinList() {
+	public List<AbstractJoin> getJoinList() {
 		return this.joinList;
 	}
 
@@ -132,7 +132,7 @@ public abstract class BaseFrom extends WrapperImpl {
 	 * @param joinList <span class="en-US">Related query information list</span>
 	 *                 <span class="zh-CN">关联查询信息列表</span>
 	 */
-	public void setJoinList(final List<BaseJoin> joinList) {
+	public void setJoinList(final List<AbstractJoin> joinList) {
 		this.joinList = joinList;
 	}
 }

@@ -93,15 +93,5 @@ public enum ConditionCode {
      * <span class="en-US">Not contains in</span>
      * <span class="zh-CN">不包含</span>
      */
-	NOT_IN,
-    /**
-     * <span class="en-US">Sub-query results contain record</span>
-     * <span class="zh-CN">子查询有记录</span>
-     */
-	EXISTS,
-    /**
-     * <span class="en-US">Sub-query results don't contain record</span>
-     * <span class="zh-CN">子查询没有记录</span>
-     */
-	NOT_EXISTS
+	NOT_IN
 }

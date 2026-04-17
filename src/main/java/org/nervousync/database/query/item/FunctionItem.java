@@ -19,8 +19,8 @@ package org.nervousync.database.query.item;
 
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.ItemType;
-import org.nervousync.database.query.core.BaseParameter;
-import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.core.AbstractParameter;
+import org.nervousync.database.query.core.AbstractItem;
 import org.nervousync.database.query.param.CalculateParameter;
 import org.nervousync.database.query.param.ColumnParameter;
 import org.nervousync.database.query.param.ConstantParameter;
@@ -39,7 +39,7 @@ import java.util.List;
 @XmlType(name = "function_item", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "function_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class FunctionItem extends BaseItem {
+public final class FunctionItem extends AbstractItem {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -64,7 +64,7 @@ public final class FunctionItem extends BaseItem {
 			@XmlElementRef(name = "function_parameter", type = FunctionParameter.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "function_parameter_list")
-	private List<BaseParameter> functionParameters;
+	private List<AbstractParameter> functionParameters;
 
 	/**
 	 * <h3 class="en-US">Constructor method for query function information define</h3>
@@ -104,7 +104,7 @@ public final class FunctionItem extends BaseItem {
 	 * @return <span class="en-US">Function arguments array</span>
 	 * <span class="zh-CN">函数参数数组</span>
 	 */
-	public List<BaseParameter> getFunctionParameters() {
+	public List<AbstractParameter> getFunctionParameters() {
 		return this.functionParameters;
 	}
 
@@ -115,7 +115,7 @@ public final class FunctionItem extends BaseItem {
 	 * @param functionParameters <span class="en-US">Function arguments array</span>
 	 *                           <span class="zh-CN">函数参数数组</span>
 	 */
-	public void setFunctionParameters(final List<BaseParameter> functionParameters) {
+	public void setFunctionParameters(final List<AbstractParameter> functionParameters) {
 		this.functionParameters = functionParameters;
 	}
 }

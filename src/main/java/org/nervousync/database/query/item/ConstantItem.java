@@ -19,7 +19,7 @@ package org.nervousync.database.query.item;
 
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.ItemType;
-import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.core.AbstractItem;
 
 /**
  * <h2 class="en-US">Query constant information define</h2>
@@ -31,7 +31,7 @@ import org.nervousync.database.query.core.BaseItem;
 @XmlType(name = "constant_item", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "constant_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class ConstantItem extends BaseItem {
+public final class ConstantItem extends AbstractItem {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>

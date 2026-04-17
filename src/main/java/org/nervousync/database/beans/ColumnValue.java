@@ -18,6 +18,8 @@
 package org.nervousync.database.beans;
 
 import jakarta.xml.bind.annotation.*;
+import org.nervousync.database.query.core.AbstractParameter;
+import org.nervousync.database.query.param.*;
 
 import java.io.Serializable;
 
@@ -45,17 +47,17 @@ public final class ColumnValue implements Serializable {
 	@XmlElement(name = "column_name")
 	private String name;
 	/**
-	 * <span class="en-US">JDBC data type code</span>
-	 * <span class="zh-CN">JDBC数据类型代码</span>
+	 * <span class="en-US">Condition parameter information</span>
+	 * <span class="zh-CN">匹配参数信息</span>
 	 */
-	@XmlElement(name = "jdbc_type")
-	private int jdbcType;
-	/**
-	 * <span class="en-US">Value of the data column</span>
-	 * <span class="zh-CN">数据列的值</span>
-	 */
-	@XmlElement(name = "column_value")
-	private Object value;
+	@XmlElements({
+			@XmlElement(name = "calculate_parameter", type = CalculateParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "column_parameter", type = ColumnParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "constant_parameter", type = ConstantParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "function_parameter", type = FunctionParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "query_parameter", type = SubQueryParameter.class, namespace = "https://nervousync.org/schemas/database")
+	})
+	private AbstractParameter parameter;
 
 	/**
 	 * <h3 class="en-US">Constructor method for the data column assignment information</h3>
@@ -87,46 +89,24 @@ public final class ColumnValue implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for the JDBC data type code</h3>
-	 * <h3 class="zh-CN">JDBC数据类型代码的 Getter 方法</h3>
+	 * <h3 class="en-US">Getter method for the condition parameter information</h3>
+	 * <h3 class="zh-CN">匹配参数信息的 Getter 方法</h3>
 	 *
-	 * @return <span class="en-US">JDBC data type code</span>
-	 * <span class="zh-CN">JDBC数据类型代码</span>
+	 * @return <span class="en-US">Condition parameter information</span>
+	 * <span class="zh-CN">匹配参数信息</span>
 	 */
-	public int getJdbcType() {
-		return this.jdbcType;
+	public AbstractParameter getParameter() {
+		return this.parameter;
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for the JDBC data type code</h3>
-	 * <h3 class="zh-CN">JDBC数据类型代码的 Setter 方法</h3>
+	 * <h3 class="en-US">Setter method for the condition parameter information</h3>
+	 * <h3 class="zh-CN">匹配参数信息的 Setter 方法</h3>
 	 *
-	 * @param jdbcType <span class="en-US">JDBC data type code</span>
-	 *                 <span class="zh-CN">JDBC数据类型代码</span>
+	 * @param parameter <span class="en-US">Condition parameter information</span>
+	 *                  <span class="zh-CN">匹配参数信息</span>
 	 */
-	public void setJdbcType(final int jdbcType) {
-		this.jdbcType = jdbcType;
-	}
-
-	/**
-	 * <h3 class="en-US">Getter method for the value of the data column</h3>
-	 * <h3 class="zh-CN">数据列的值的 Getter 方法</h3>
-	 *
-	 * @return <span class="en-US">Value of the data column</span>
-	 * <span class="zh-CN">数据列的值</span>
-	 */
-	public Object getValue() {
-		return this.value;
-	}
-
-	/**
-	 * <h3 class="en-US">Setter method for the value of the data column</h3>
-	 * <h3 class="zh-CN">数据列的值的 Setter 方法</h3>
-	 *
-	 * @param value <span class="en-US">Value of the data column</span>
-	 *              <span class="zh-CN">数据列的值</span>
-	 */
-	public void setValue(final Object value) {
-		this.value = value;
+	public void setParameter(final AbstractParameter parameter) {
+		this.parameter = parameter;
 	}
 }

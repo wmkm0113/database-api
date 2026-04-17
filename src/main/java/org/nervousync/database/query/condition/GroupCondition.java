@@ -19,7 +19,7 @@ package org.nervousync.database.query.condition;
 
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.ConditionType;
-import org.nervousync.database.query.core.BaseCondition;
+import org.nervousync.database.query.core.AbstractCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.List;
 @XmlType(name = "group_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "group_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class GroupCondition extends BaseCondition {
+public final class GroupCondition extends AbstractCondition {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -51,7 +51,7 @@ public final class GroupCondition extends BaseCondition {
 			@XmlElement(name = "group_condition", type = GroupCondition.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "condition_list")
-	private List<BaseCondition> conditionList = new ArrayList<>();
+	private List<AbstractCondition> conditionList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Constructor method for the query column condition information group define</h3>
@@ -68,7 +68,7 @@ public final class GroupCondition extends BaseCondition {
 	 * @return <span class="en-US">Match condition list</span>
 	 * <span class="zh-CN">匹配条件列表</span>
 	 */
-	public List<BaseCondition> getConditionList() {
+	public List<AbstractCondition> getConditionList() {
 		return conditionList;
 	}
 
@@ -79,7 +79,7 @@ public final class GroupCondition extends BaseCondition {
 	 * @param conditionList <span class="en-US">Match condition list</span>
 	 *                      <span class="zh-CN">匹配条件列表</span>
 	 */
-	public void setConditionList(List<BaseCondition> conditionList) {
+	public void setConditionList(List<AbstractCondition> conditionList) {
 		this.conditionList = conditionList;
 	}
 }

@@ -19,7 +19,7 @@ package org.nervousync.database.query.from;
 
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.CategoryType;
-import org.nervousync.database.query.core.BaseFrom;
+import org.nervousync.database.query.core.AbstractFrom;
 
 /**
  * <h2 class="en-US">Query from data table definition</h2>
@@ -31,7 +31,7 @@ import org.nervousync.database.query.core.BaseFrom;
 @XmlType(name = "from_table", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "from_table", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class FromTable extends BaseFrom {
+public final class FromTable extends AbstractFrom {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>

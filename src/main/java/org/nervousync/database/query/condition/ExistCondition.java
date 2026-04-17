@@ -15,31 +15,37 @@
  * limitations under the License.
  */
 
-package org.nervousync.database.query.item;
+package org.nervousync.database.query.condition;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.database.enumerations.ItemType;
+import org.nervousync.database.enumerations.ConditionType;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.core.AbstractCondition;
 
 /**
- * <h2 class="en-US">Scalar sub-query information define</h2>
- * <h2 class="zh-CN">标量子查询信息定义</h2>
+ * <h2 class="en-US">EXIST or NOT EXIST condition information</h2>
+ * <h2 class="zh-CN">EXIST 或 NOT EXIST查询信息</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
+ * @version $Revision: 1.0.0 $ $Date: Mar 23, 2026 20:10:21 $
  */
-@XmlType(name = "query_item", namespace = "https://nervousync.org/schemas/database")
-@XmlRootElement(name = "query_item", namespace = "https://nervousync.org/schemas/database")
+@XmlType(name = "exist_condition", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "exist_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class SubQueryItem extends BaseItem {
+public final class ExistCondition extends AbstractCondition {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
-	private static final long serialVersionUID = -8885263317043765606L;
+	private static final long serialVersionUID = -4924421033357706688L;
 
+	/**
+	 * <span class="en-US">NOT prefix</span>
+	 * <span class="zh-CN">NOT前缀</span>
+	 */
+	@XmlElement
+	private boolean not = Boolean.FALSE;
 	/**
 	 * <span class="en-US">Sub-query information</span>
 	 * <span class="zh-CN">子查询信息</span>
@@ -48,11 +54,33 @@ public final class SubQueryItem extends BaseItem {
 	private QueryInfo queryInfo;
 
 	/**
-	 * <h3 class="en-US">Constructor method for abstract query item define</h3>
-	 * <h3 class="zh-CN">抽象查询项信息定义的构造方法</h3>
+	 * <h3 class="en-US">Constructor method for the EXIST or NOT EXIST condition information</h3>
+	 * <h3 class="zh-CN">EXIST 或 NOT EXIST查询信息的构造方法</h3>
 	 */
-	public SubQueryItem() {
-		super(ItemType.QUERY);
+	public ExistCondition() {
+		super(ConditionType.EXIST);
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the NOT prefix</h3>
+	 * <h3 class="zh-CN">NOT前缀的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">NOT prefix</span>
+	 * <span class="zh-CN">NOT前缀</span>
+	 */
+	public boolean isNot() {
+		return this.not;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the NOT prefix</h3>
+	 * <h3 class="zh-CN">NOT前缀的 Setter 方法</h3>
+	 *
+	 * @param not <span class="en-US">NOT prefix</span>
+	 *            <span class="zh-CN">NOT前缀</span>
+	 */
+	public void setNot(final boolean not) {
+		this.not = not;
 	}
 
 	/**

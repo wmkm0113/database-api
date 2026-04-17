@@ -19,7 +19,7 @@ package org.nervousync.database.query.param;
 
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.ItemType;
-import org.nervousync.database.query.core.BaseParameter;
+import org.nervousync.database.query.core.AbstractParameter;
 import org.nervousync.database.query.item.FunctionItem;
 
 /**
@@ -32,7 +32,7 @@ import org.nervousync.database.query.item.FunctionItem;
 @XmlType(name = "function_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "function_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class FunctionParameter extends BaseParameter {
+public final class FunctionParameter extends AbstractParameter {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>

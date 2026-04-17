@@ -24,7 +24,7 @@ import org.nervousync.builder.ParentBuilder;
 import org.nervousync.database.enumerations.CalculateCode;
 import org.nervousync.database.enumerations.ItemType;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.core.AbstractItem;
 import org.nervousync.database.query.item.*;
 import org.nervousync.exceptions.builder.BuilderException;
 import org.nervousync.utils.core.StringUtils;
@@ -50,7 +50,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * <span class="zh-CN">查询项目实例对象列表</span>
 	 */
 	@Nonnull
-	private final List<BaseItem> itemList = new ArrayList<>();
+	private final List<AbstractItem> itemList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Constructor method for the query items information list builder</h3>
@@ -61,7 +61,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * @param itemList      <span class="en-US">Query item instance list</span>
 	 *                      <span class="zh-CN">查询项目实例对象列表</span>
 	 */
-	public ItemsBuilder(final P parentBuilder, final List<BaseItem> itemList) {
+	public ItemsBuilder(final P parentBuilder, final List<AbstractItem> itemList) {
 		super(parentBuilder);
 		if (itemList != null) {
 			this.itemList.addAll(itemList);
@@ -191,8 +191,8 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 
 	@Override
 	public void confirm(final Object object) {
-		if (object instanceof BaseItem) {
-			this.itemList.add((BaseItem) object);
+		if (object instanceof AbstractItem) {
+			this.itemList.add((AbstractItem) object);
 		}
 	}
 
@@ -215,7 +215,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * <span class="zh-CN">查询项目实例对象列表</span>
 		 */
 		@Nonnull
-		private final List<BaseItem> itemList;
+		private final List<AbstractItem> itemList;
 
 		/**
 		 * <h3 class="en-US">Constructor method for the query items information</h3>
@@ -224,7 +224,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * @param itemList <span class="en-US">Query item instance list</span>
 		 *                 <span class="zh-CN">查询项目实例对象列表</span>
 		 */
-		public Items(@Nonnull final List<BaseItem> itemList) {
+		public Items(@Nonnull final List<AbstractItem> itemList) {
 			this.itemList = itemList;
 		}
 
@@ -236,7 +236,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 * <span class="zh-CN">查询项目实例对象列表</span>
 		 */
 		@Nonnull
-		public List<BaseItem> getItemList() {
+		public List<AbstractItem> getItemList() {
 			return this.itemList;
 		}
 	}
@@ -252,7 +252,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
 	 */
-	public static abstract class QueryItemBuilder<P extends ParentBuilder, T extends BaseItem>
+	public static abstract class QueryItemBuilder<P extends ParentBuilder, T extends AbstractItem>
 			extends AbstractBuilder<P, T> {
 
 		/**
@@ -414,7 +414,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
 	 */
-	public static final class SubQueryItemBuilder<P extends ParentBuilder> extends QueryItemBuilder<P, SubQueryItem> {
+	public static final class SubQueryItemBuilder<P extends ParentBuilder> extends QueryItemBuilder<P, QueryItem> {
 
 		/**
 		 * <h3 class="en-US">Constructor method for the sub-query item information builder</h3>
@@ -424,7 +424,7 @@ public final class ItemsBuilder<P extends ParentBuilder> extends AbstractBuilder
 		 *                      <span class="zh-CN">父构建器实例对象</span>
 		 */
 		SubQueryItemBuilder(final P parentBuilder) {
-			super(parentBuilder, new SubQueryItem());
+			super(parentBuilder, new QueryItem());
 		}
 
 		/**

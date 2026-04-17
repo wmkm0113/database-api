@@ -17,16 +17,14 @@
 
 package org.nervousync.database.query.result;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * <h2 class="en-US">Query result data defines</h2>
- * <h2 class="zh-CN">查询结果项定义</h2>
+ * <h2 class="en-US">Query record defines</h2>
+ * <h2 class="zh-CN">查询记录定义</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
@@ -42,23 +40,12 @@ public final class ResultData implements Serializable {
 	private static final long serialVersionUID = 104929700534873339L;
 
 	/**
-	 * <span class="en-US">Label name</span>
-	 * <span class="zh-CN">标签名</span>
+	 * <span class="en-US">Data item information list</span>
+	 * <span class="zh-CN">数据项信息列表</span>
 	 */
-	@XmlElement(name = "label_name")
-	private String labelName;
-	/**
-	 * <span class="en-US">JDBC data type code</span>
-	 * <span class="zh-CN">JDBC数据类型代码</span>
-	 */
-	@XmlElement(name = "jdbc_type")
-	private int jdbcType;
-	/**
-	 * <span class="en-US">Value of the data column</span>
-	 * <span class="zh-CN">数据列的值</span>
-	 */
-	@XmlElement
-	private Object value;
+	@XmlElement(name = "result_item")
+	@XmlElementWrapper(name = "item_list")
+	private List<ResultItem> itemList;
 
 	/**
 	 * <h3 class="en-US">Constructor method for the query result data defines</h3>
@@ -68,68 +55,24 @@ public final class ResultData implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for the label name</h3>
-	 * <h3 class="zh-CN">标签名的 Getter 方法</h3>
+	 * <h3 class="en-US">Getter method for the data item information list</h3>
+	 * <h3 class="zh-CN">数据项信息列表的 Getter 方法</h3>
 	 *
-	 * @return <span class="en-US">Label name</span>
-	 * <span class="zh-CN">标签名</span>
+	 * @return <span class="en-US">Data item information list</span>
+	 * <span class="zh-CN">数据项信息列表</span>
 	 */
-	public String getLabelName() {
-		return this.labelName;
+	public List<ResultItem> getItemList() {
+		return this.itemList;
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for the label name</h3>
-	 * <h3 class="zh-CN">标签名的 Setter 方法</h3>
+	 * <h3 class="en-US">Setter method for the data item information list</h3>
+	 * <h3 class="zh-CN">数据项信息列表的 Setter 方法</h3>
 	 *
-	 * @param labelName <span class="en-US">Label name</span>
-	 *                  <span class="zh-CN">标签名</span>
+	 * @param itemList <span class="en-US">Data item information list</span>
+	 *                 <span class="zh-CN">数据项信息列表</span>
 	 */
-	public void setLabelName(final String labelName) {
-		this.labelName = labelName;
-	}
-
-	/**
-	 * <h3 class="en-US">Getter method for the JDBC data type code</h3>
-	 * <h3 class="zh-CN">JDBC数据类型代码的 Getter 方法</h3>
-	 *
-	 * @return <span class="en-US">JDBC data type code</span>
-	 * <span class="zh-CN">JDBC数据类型代码</span>
-	 */
-	public int getJdbcType() {
-		return this.jdbcType;
-	}
-
-	/**
-	 * <h3 class="en-US">Setter method for the JDBC data type code</h3>
-	 * <h3 class="zh-CN">JDBC数据类型代码的 Setter 方法</h3>
-	 *
-	 * @param jdbcType <span class="en-US">JDBC data type code</span>
-	 *                 <span class="zh-CN">JDBC数据类型代码</span>
-	 */
-	public void setJdbcType(final int jdbcType) {
-		this.jdbcType = jdbcType;
-	}
-
-	/**
-	 * <h3 class="en-US">Getter method for the value of the data column</h3>
-	 * <h3 class="zh-CN">数据列的值的 Getter 方法</h3>
-	 *
-	 * @return <span class="en-US">Value of the data column</span>
-	 * <span class="zh-CN">数据列的值</span>
-	 */
-	public Object getValue() {
-		return this.value;
-	}
-
-	/**
-	 * <h3 class="en-US">Setter method for the value of the data column</h3>
-	 * <h3 class="zh-CN">数据列的值的 Setter 方法</h3>
-	 *
-	 * @param value <span class="en-US">Value of the data column</span>
-	 *              <span class="zh-CN">数据列的值</span>
-	 */
-	public void setValue(final Object value) {
-		this.value = value;
+	public void setItemList(final List<ResultItem> itemList) {
+		this.itemList = itemList;
 	}
 }

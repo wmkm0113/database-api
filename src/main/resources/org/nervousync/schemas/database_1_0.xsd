@@ -73,6 +73,11 @@
                             </xsd:restriction>
                         </xsd:simpleType>
                     </xsd:element>
+                    <xsd:element name="database_name" type="xsd:string" minOccurs="0">
+                        <xsd:annotation>
+                            <xsd:documentation>Database name</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                     <xsd:element name="table_name" type="xsd:string">
                         <xsd:annotation>
                             <xsd:documentation>Data table name</xsd:documentation>
@@ -89,6 +94,24 @@
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:group ref="condition_parameters" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="exist_condition">
+        <xsd:complexContent>
+            <xsd:extension base="base_condition">
+                <xsd:sequence>
+                    <xsd:element name="not" type="xsd:boolean">
+                        <xsd:annotation>
+                            <xsd:documentation>NOT prefix</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="sub_query" type="query_info">
+                        <xsd:annotation>
+                            <xsd:documentation>Sub-query information</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>
@@ -379,6 +402,14 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="join_list" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Related query information list</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:group ref="join_group" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="table_join">
@@ -527,6 +558,11 @@
     </xsd:group>
     <xsd:complexType name="group_column">
         <xsd:sequence>
+            <xsd:element name="database_name" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Database name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
             <xsd:element name="table_name" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation>Data table name</xsd:documentation>
@@ -541,6 +577,11 @@
     </xsd:complexType>
     <xsd:complexType name="order_column">
         <xsd:sequence>
+            <xsd:element name="database_name" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Database name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
             <xsd:element name="table_name" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation>Data table name</xsd:documentation>
@@ -640,16 +681,115 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:complexType name="result_data">
+    <xsd:complexType name="result_meta">
+        <xsd:sequence>
+            <xsd:element name="auto_increment" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Auto increment flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="case_sensitive" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Case sensitive flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="searchable" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Using for search data flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="currency" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Currency flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="signed" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Signed data value flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="read_only" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Read-only flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="writable" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Data writable flag</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="definitely_writable" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation>Flag indicating successful data write</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="nullable" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation>Data column null value marker</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="display_size" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation>Display data length</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="column_type" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation>JDBC type code of the data column</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="precision" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation>Data column precision</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="scale" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation>Number of decimal places</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="column_label" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Data column alias name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="column_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Data column name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="schema_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Database schema name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="table_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Data table name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="category_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Database catalog name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="type_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>SQL type string</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="class_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Java class name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="result_item">
         <xsd:sequence>
             <xsd:element name="label_name" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation>Label name</xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
-            <xsd:element name="jdbc_type" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation>JDBC data type code</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="value" type="xsd:anyType" minOccurs="0">
@@ -659,11 +799,43 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:complexType name="result_map">
+    <xsd:complexType name="result_data">
+        <xsd:sequence>
+            <xsd:element name="item_list">
+                <xsd:annotation>
+                    <xsd:documentation>Data item information list</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="result_item" type="result_item" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>Data item information</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="result_list">
         <xsd:annotation>
-            <xsd:documentation>Query result map</xsd:documentation>
+            <xsd:documentation>Query result list</xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
+            <xsd:element name="meta_list">
+                <xsd:annotation>
+                    <xsd:documentation>Data column meta information list</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="meta_data" type="result_meta" maxOccurs="unbounded">
+                            <xsd:annotation>
+                                <xsd:documentation>Data column meta information</xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
             <xsd:element name="data_list">
                 <xsd:annotation>
                     <xsd:documentation>Data item information list</xsd:documentation>
@@ -680,36 +852,5 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:element name="partial_collection">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="result_list">
-                    <xsd:annotation>
-                        <xsd:documentation>Collection of query results</xsd:documentation>
-                    </xsd:annotation>
-                    <xsd:complexType>
-                        <xsd:sequence>
-                            <xsd:element name="result_map" type="result_map"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-                <xsd:element name="page_number" type="xsd:integer" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>Current page number</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-                <xsd:element name="page_size" type="xsd:integer" minOccurs="0">
-                    <xsd:annotation>
-                        <xsd:documentation>Limit size of per page</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-                <xsd:element name="total_count" type="xsd:long">
-                    <xsd:annotation>
-                        <xsd:documentation>Total count of the query</xsd:documentation>
-                    </xsd:annotation>
-                </xsd:element>
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
     <xsd:element name="query_info" type="query_info"/>
 </xsd:schema>

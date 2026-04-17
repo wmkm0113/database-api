@@ -32,10 +32,10 @@ import java.sql.Types;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:30:54 $
  */
-@XmlSeeAlso({CalculateItem.class, ColumnItem.class, ConstantItem.class, FunctionItem.class, SubQueryItem.class})
+@XmlSeeAlso({CalculateItem.class, ColumnItem.class, ConstantItem.class, FunctionItem.class, QueryItem.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class BaseItem extends WrapperImpl {
+public abstract class AbstractItem extends WrapperImpl {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -69,7 +69,7 @@ public abstract class BaseItem extends WrapperImpl {
 	 * @param itemType <span class="en-US">Query item type</span>
 	 *                 <span class="zh-CN">查询项类型</span>
 	 */
-	protected BaseItem(final ItemType itemType) {
+	protected AbstractItem(final ItemType itemType) {
 		this.itemType = itemType;
 	}
 

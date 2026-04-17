@@ -34,7 +34,7 @@ import org.nervousync.database.query.condition.GroupCondition;
 @XmlSeeAlso({ColumnCondition.class, GroupCondition.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class BaseCondition extends WrapperImpl {
+public abstract class AbstractCondition extends WrapperImpl {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -62,7 +62,7 @@ public abstract class BaseCondition extends WrapperImpl {
 	 * @param conditionType <span class="en-US">Query condition type enumeration value</span>
 	 *                      <span class="zh-CN">查询条件类型枚举值</span>
 	 */
-	protected BaseCondition(final ConditionType conditionType) {
+	protected AbstractCondition(final ConditionType conditionType) {
 		this.conditionType = conditionType;
 	}
 

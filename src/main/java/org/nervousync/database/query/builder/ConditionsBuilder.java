@@ -22,9 +22,11 @@ import org.nervousync.builder.AbstractBuilder;
 import org.nervousync.builder.ParentBuilder;
 import org.nervousync.database.enumerations.ConditionCode;
 import org.nervousync.database.enumerations.ConnectionCode;
+import org.nervousync.database.query.QueryInfo;
 import org.nervousync.database.query.condition.ColumnCondition;
+import org.nervousync.database.query.condition.ExistCondition;
 import org.nervousync.database.query.condition.GroupCondition;
-import org.nervousync.database.query.core.BaseCondition;
+import org.nervousync.database.query.core.AbstractCondition;
 import org.nervousync.database.query.param.ArraysParameter;
 import org.nervousync.database.query.param.ColumnParameter;
 import org.nervousync.database.query.param.ConstantParameter;
@@ -55,7 +57,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * <span class="zh-CN">查询条件实例对象列表</span>
 	 */
 	@Nonnull
-	private final List<BaseCondition> conditionList = new ArrayList<>();
+	private final List<AbstractCondition> conditionList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Protected constructor for AbstractBuilder</h3>
@@ -68,7 +70,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @param conditionList <span class="en-US">Query condition instance list</span>
 	 *                      <span class="zh-CN">查询条件实例对象列表</span>
 	 */
-	public ConditionsBuilder(final P parentBuilder, final boolean having, final List<BaseCondition> conditionList) {
+	public ConditionsBuilder(final P parentBuilder, final boolean having, final List<AbstractCondition> conditionList) {
 		super(parentBuilder);
 		this.having = having;
 		if (conditionList != null) {
@@ -80,240 +82,282 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * <h3 class="en-US">Data column less condition information builder</h3>
 	 * <h3 class="zh-CN">数据列小于条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> lessThan(final String tableName, final String columnName) {
-		return this.lessThan(ConnectionCode.AND, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> lessThan(@Nonnull final String databaseName,
+	                                                             @Nonnull final String tableName,
+	                                                             @Nonnull final String columnName) {
+		return this.lessThan(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column less or equal condition information builder</h3>
 	 * <h3 class="zh-CN">数据列小于等于条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> lessEqual(final String tableName, final String columnName) {
-		return this.lessEqual(ConnectionCode.AND, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> lessEqual(@Nonnull final String databaseName,
+	                                                              @Nonnull final String tableName,
+	                                                              @Nonnull final String columnName) {
+		return this.lessEqual(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column greater condition information builder</h3>
 	 * <h3 class="zh-CN">数据列大于条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterThan(final String tableName, final String columnName) {
-		return this.greaterThan(ConnectionCode.AND, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterThan(@Nonnull final String databaseName,
+	                                                                @Nonnull final String tableName,
+	                                                                @Nonnull final String columnName) {
+		return this.greaterThan(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column greater or equal condition information builder</h3>
 	 * <h3 class="zh-CN">数据列大于等于条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterEqual(final String tableName, final String columnName) {
-		return this.greaterEqual(ConnectionCode.AND, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterEqual(@Nonnull final String databaseName,
+	                                                                 @Nonnull final String tableName,
+	                                                                 @Nonnull final String columnName) {
+		return this.greaterEqual(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column equal condition information builder</h3>
 	 * <h3 class="zh-CN">数据列等于条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> equalThan(final String tableName, final String columnName) {
-		return this.equalThan(ConnectionCode.AND, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> equalThan(@Nonnull final String databaseName,
+	                                                              @Nonnull final String tableName,
+	                                                              @Nonnull final String columnName) {
+		return this.equalThan(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column not equal condition information builder</h3>
 	 * <h3 class="zh-CN">数据列不等于条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notEqual(final String tableName, final String columnName) {
-		return this.notEqual(ConnectionCode.AND, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> notEqual(@Nonnull final String databaseName,
+	                                                             @Nonnull final String tableName,
+	                                                             @Nonnull final String columnName) {
+		return this.notEqual(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column in arrays condition information builder</h3>
 	 * <h3 class="zh-CN">数据列在数组中条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> in(final String tableName, final String columnName) {
-		return this.in(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> in(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                               @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+		return this.in(ConnectionCode.AND, databaseName, tableName, columnName, arrayObjects);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column not in arrays condition information builder</h3>
 	 * <h3 class="zh-CN">数据列不在数组中条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notIn(final String tableName, final String columnName) {
-		return this.notIn(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> notIn(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                                  @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+		return this.notIn(ConnectionCode.AND, databaseName, tableName, columnName, arrayObjects);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column in ranges condition information builder</h3>
 	 * <h3 class="zh-CN">数据列在指定区间条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> betweenAnd(final String tableName, final String columnName) {
-		return this.betweenAnd(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> betweenAnd(@Nonnull final String databaseName,
+	                                       @Nonnull final String tableName, @Nonnull final String columnName,
+	                                       @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+		return this.betweenAnd(ConnectionCode.AND, databaseName, tableName, columnName, beginValue, endValue);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column in ranges condition information builder</h3>
 	 * <h3 class="zh-CN">数据列不在指定区间条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notBetweenAnd(final String tableName, final String columnName) {
-		return this.notBetweenAnd(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> notBetweenAnd(@Nonnull final String databaseName,
+	                                          @Nonnull final String tableName, @Nonnull final String columnName,
+	                                          @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+		return this.notBetweenAnd(ConnectionCode.AND, databaseName, tableName, columnName, beginValue, endValue);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column is null</h3>
 	 * <h3 class="zh-CN">数据列为空</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ConditionsBuilder<P> isNull(final String tableName, final String columnName) {
-		return this.isNull(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> isNull(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                                   @Nonnull final String columnName) {
+		return this.isNull(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column not null</h3>
 	 * <h3 class="zh-CN">数据列不为空</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ConditionsBuilder<P> notNull(final String tableName, final String columnName) {
-		return this.notNull(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> notNull(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                                    @Nonnull final String columnName) {
+		return this.notNull(ConnectionCode.AND, databaseName, tableName, columnName);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column similar condition information builder</h3>
 	 * <h3 class="zh-CN">数据列模糊匹配条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> similar(final String tableName, final String columnName) {
-		return this.similar(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> similar(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                                    @Nonnull final String columnName, @Nonnull final String pattern) {
+		return this.similar(ConnectionCode.AND, databaseName, tableName, columnName, pattern);
 	}
 
 	/**
 	 * <h3 class="en-US">Data column is not similar condition information builder</h3>
 	 * <h3 class="zh-CN">数据列非模糊匹配条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notSimilar(final String tableName, final String columnName) {
-		return this.notSimilar(ConnectionCode.AND, tableName, columnName);
+	public ConditionsBuilder<P> notSimilar(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                                       @Nonnull final String columnName, @Nonnull final String pattern) {
+		return this.notSimilar(ConnectionCode.AND, databaseName, tableName, columnName, pattern);
 	}
 
 	/**
 	 * <h3 class="en-US">Data exists condition information builder</h3>
 	 * <h3 class="zh-CN">数据存在条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> exists(final String tableName, final String columnName) {
-		return this.exists(ConnectionCode.AND, tableName, columnName);
+	public ExistConditionBuilder<ConditionsBuilder<P>> exists() {
+		return this.exists(ConnectionCode.AND);
 	}
 
 	/**
 	 * <h3 class="en-US">Data don't exist condition information builder</h3>
 	 * <h3 class="zh-CN">数据不存在条件信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notExists(final String tableName, final String columnName) {
-		return this.notExists(ConnectionCode.AND, tableName, columnName);
+	public ExistConditionBuilder<ConditionsBuilder<P>> notExists() {
+		return this.notExists(ConnectionCode.AND);
 	}
 
 	/**
@@ -322,6 +366,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -329,9 +375,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> lessThan(final ConnectionCode connectionCode,
-	                                                             final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.LESS_THAN, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> lessThan(@Nonnull final ConnectionCode connectionCode,
+	                                                             @Nonnull final String databaseName,
+	                                                             @Nonnull final String tableName,
+	                                                             @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.LESS_THAN, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -340,6 +388,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -347,9 +397,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> lessEqual(final ConnectionCode connectionCode,
-	                                                              final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.LESS_EQUAL, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> lessEqual(@Nonnull final ConnectionCode connectionCode,
+	                                                              @Nonnull final String databaseName,
+	                                                              @Nonnull final String tableName,
+	                                                              @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.LESS_EQUAL, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -358,6 +410,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -365,9 +419,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterThan(final ConnectionCode connectionCode,
-	                                                                final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.GREATER_THAN, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterThan(@Nonnull final ConnectionCode connectionCode,
+	                                                                @Nonnull final String databaseName,
+	                                                                @Nonnull final String tableName,
+	                                                                @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.GREATER_THAN, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -376,6 +432,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -383,9 +441,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterEqual(final ConnectionCode connectionCode,
-	                                                                 final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.GREATER_EQUAL, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> greaterEqual(@Nonnull final ConnectionCode connectionCode,
+	                                                                 @Nonnull final String databaseName,
+	                                                                 @Nonnull final String tableName,
+	                                                                 @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.GREATER_EQUAL, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -394,6 +454,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -402,8 +464,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
 	public ColumnConditionBuilder<ConditionsBuilder<P>> equalThan(final ConnectionCode connectionCode,
-	                                                              final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.EQUAL_THAN, tableName, columnName);
+	                                                              @Nonnull final String databaseName, final String tableName, final String columnName) {
+		return this.column(connectionCode, ConditionCode.EQUAL_THAN, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -412,6 +474,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -419,9 +483,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notEqual(final ConnectionCode connectionCode,
-	                                                             final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.NOT_EQUAL, tableName, columnName);
+	public ColumnConditionBuilder<ConditionsBuilder<P>> notEqual(@Nonnull final ConnectionCode connectionCode,
+	                                                             @Nonnull final String databaseName,
+	                                                             @Nonnull final String tableName,
+	                                                             @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.NOT_EQUAL, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -430,6 +496,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -437,9 +505,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> in(final ConnectionCode connectionCode,
-	                                                       final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.IN, tableName, columnName);
+	public ConditionsBuilder<P> in(@Nonnull final ConnectionCode connectionCode,
+	                               @Nonnull final String databaseName, @Nonnull final String tableName,
+	                               @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+		return this.column(connectionCode, ConditionCode.IN, databaseName, tableName, columnName)
+				.inArray(arrayObjects)
+				.confirm();
 	}
 
 	/**
@@ -448,6 +519,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -455,9 +528,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notIn(final ConnectionCode connectionCode,
-	                                                          final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.NOT_IN, tableName, columnName);
+	public ConditionsBuilder<P> notIn(@Nonnull final ConnectionCode connectionCode,
+	                                  @Nonnull final String databaseName, @Nonnull final String tableName,
+	                                  @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+		return this.column(connectionCode, ConditionCode.NOT_IN, databaseName, tableName, columnName)
+				.inArray(arrayObjects)
+				.confirm();
 	}
 
 	/**
@@ -466,6 +542,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -473,9 +551,13 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> betweenAnd(final ConnectionCode connectionCode,
-	                                                               final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.BETWEEN_AND, tableName, columnName);
+	public ConditionsBuilder<P> betweenAnd(@Nonnull final ConnectionCode connectionCode,
+	                                       @Nonnull final String databaseName,
+	                                       @Nonnull final String tableName, @Nonnull final String columnName,
+	                                       @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+		return this.column(connectionCode, ConditionCode.BETWEEN_AND, databaseName, tableName, columnName)
+				.valueRange(beginValue, endValue)
+				.confirm();
 	}
 
 	/**
@@ -484,6 +566,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -491,9 +575,13 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notBetweenAnd(final ConnectionCode connectionCode,
-	                                                                  final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.NOT_BETWEEN_AND, tableName, columnName);
+	public ConditionsBuilder<P> notBetweenAnd(@Nonnull final ConnectionCode connectionCode,
+	                                          @Nonnull final String databaseName,
+	                                          @Nonnull final String tableName, @Nonnull final String columnName,
+	                                          @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+		return this.column(connectionCode, ConditionCode.NOT_BETWEEN_AND, databaseName, tableName, columnName)
+				.valueRange(beginValue, endValue)
+				.confirm();
 	}
 
 	/**
@@ -502,6 +590,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -509,9 +599,10 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ConditionsBuilder<P> isNull(final ConnectionCode connectionCode,
-	                                   final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.IS_NULL, tableName, columnName).confirm();
+	public ConditionsBuilder<P> isNull(@Nonnull final ConnectionCode connectionCode,
+	                                   @Nonnull final String databaseName, @Nonnull final String tableName,
+	                                   @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.IS_NULL, databaseName, tableName, columnName).confirm();
 	}
 
 	/**
@@ -520,6 +611,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -527,9 +620,10 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ConditionsBuilder<P> notNull(final ConnectionCode connectionCode,
-	                                    final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.NOT_NULL, tableName, columnName).confirm();
+	public ConditionsBuilder<P> notNull(@Nonnull final ConnectionCode connectionCode,
+	                                    @Nonnull final String databaseName, @Nonnull final String tableName,
+	                                    @Nonnull final String columnName) {
+		return this.column(connectionCode, ConditionCode.NOT_NULL, databaseName, tableName, columnName).confirm();
 	}
 
 	/**
@@ -538,6 +632,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -545,9 +641,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> similar(final ConnectionCode connectionCode,
-	                                                            final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.SIMILAR_THAN, tableName, columnName);
+	public ConditionsBuilder<P> similar(@Nonnull final ConnectionCode connectionCode,
+	                                    @Nonnull final String databaseName, @Nonnull final String tableName,
+	                                    @Nonnull final String columnName, @Nonnull final String pattern) {
+		return this.column(connectionCode, ConditionCode.SIMILAR_THAN, databaseName, tableName, columnName)
+				.matchValue(pattern)
+				.confirm();
 	}
 
 	/**
@@ -556,6 +655,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -563,9 +664,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notSimilar(final ConnectionCode connectionCode,
-	                                                               final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.NOT_SIMILAR, tableName, columnName);
+	public ConditionsBuilder<P> notSimilar(@Nonnull final ConnectionCode connectionCode,
+	                                       @Nonnull final String databaseName, @Nonnull final String tableName,
+	                                       @Nonnull final String columnName, @Nonnull final String pattern) {
+		return this.column(connectionCode, ConditionCode.NOT_SIMILAR, databaseName, tableName, columnName)
+				.matchValue(pattern)
+				.confirm();
 	}
 
 	/**
@@ -574,16 +678,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
-	 * @param tableName      <span class="en-US">Data table name</span>
-	 *                       <span class="zh-CN">数据表名</span>
-	 * @param columnName     <span class="en-US">Data column name</span>
-	 *                       <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> exists(final ConnectionCode connectionCode,
-	                                                           final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.EXISTS, tableName, columnName);
+	public ExistConditionBuilder<ConditionsBuilder<P>> exists(@Nonnull final ConnectionCode connectionCode) {
+		return new ExistConditionBuilder<>(this, connectionCode, Boolean.FALSE);
 	}
 
 	/**
@@ -592,16 +691,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *
 	 * @param connectionCode <span class="en-US">Query connection code</span>
 	 *                       <span class="zh-CN">查询条件连接代码</span>
-	 * @param tableName      <span class="en-US">Data table name</span>
-	 *                       <span class="zh-CN">数据表名</span>
-	 * @param columnName     <span class="en-US">Data column name</span>
-	 *                       <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	public ColumnConditionBuilder<ConditionsBuilder<P>> notExists(final ConnectionCode connectionCode,
-	                                                              final String tableName, final String columnName) {
-		return this.column(connectionCode, ConditionCode.NOT_EXISTS, tableName, columnName);
+	public ExistConditionBuilder<ConditionsBuilder<P>> notExists(@Nonnull final ConnectionCode connectionCode) {
+		return new ExistConditionBuilder<>(this, connectionCode, Boolean.TRUE);
 	}
 
 	/**
@@ -624,14 +718,14 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Group query condition information builder instance object</span>
 	 * <span class="zh-CN">查询信息组构建器实例对象</span>
 	 */
-	public GroupConditionBuilder<ConditionsBuilder<P>> group(final ConnectionCode connectionCode) {
+	public GroupConditionBuilder<ConditionsBuilder<P>> group(@Nonnull final ConnectionCode connectionCode) {
 		return new GroupConditionBuilder<>(this, connectionCode);
 	}
 
 	@Override
 	public void confirm(final Object object) {
-		if (object instanceof BaseCondition) {
-			this.conditionList.add((BaseCondition) object);
+		if (object instanceof AbstractCondition) {
+			this.conditionList.add((AbstractCondition) object);
 		}
 	}
 
@@ -648,6 +742,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 *                       <span class="zh-CN">查询条件连接代码</span>
 	 * @param conditionCode  <span class="en-US">Query condition code</span>
 	 *                       <span class="zh-CN">查询条件运算代码</span>
+	 * @param databaseName   <span class="en-US">Database identify information</span>
+	 *                       <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName      <span class="en-US">Data table name</span>
 	 *                       <span class="zh-CN">数据表名</span>
 	 * @param columnName     <span class="en-US">Data column name</span>
@@ -655,10 +751,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Data column query condition information builder instance object</span>
 	 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 	 */
-	private ColumnConditionBuilder<ConditionsBuilder<P>> column(final ConnectionCode connectionCode,
-	                                                            final ConditionCode conditionCode,
-	                                                            final String tableName, final String columnName) {
-		return new ColumnConditionBuilder<>(this, connectionCode, conditionCode, tableName, columnName);
+	private ColumnConditionBuilder<ConditionsBuilder<P>> column(@Nonnull final ConnectionCode connectionCode,
+	                                                            @Nonnull final ConditionCode conditionCode,
+	                                                            @Nonnull final String databaseName,
+	                                                            @Nonnull final String tableName,
+	                                                            @Nonnull final String columnName) {
+		return new ColumnConditionBuilder<>(this, connectionCode, conditionCode, databaseName, tableName, columnName);
 	}
 
 	/**
@@ -683,16 +781,20 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *                      <span class="zh-CN">查询条件连接代码</span>
 		 * @param condition     <span class="en-US">Query condition code</span>
 		 *                      <span class="zh-CN">查询条件运算代码</span>
+		 * @param databaseName  <span class="en-US">Database identify information</span>
+		 *                      <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName     <span class="en-US">Data table name</span>
 		 *                      <span class="zh-CN">数据表名</span>
 		 * @param columnName    <span class="en-US">Data column name</span>
 		 *                      <span class="zh-CN">数据列名</span>
 		 */
 		public ColumnConditionBuilder(final P parentBuilder, final ConnectionCode connection,
-		                              final ConditionCode condition, final String tableName, final String columnName) {
+		                              final ConditionCode condition, @Nonnull final String databaseName,
+		                              final String tableName, final String columnName) {
 			super(parentBuilder, new ColumnCondition());
 			this.condition.setConnectionCode(connection);
 			this.condition.setConditionCode(condition);
+			this.condition.setDatabaseName(databaseName);
 			this.condition.setTableName(tableName);
 			this.condition.setColumnName(columnName);
 		}
@@ -749,7 +851,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Current builder instance object</span>
 		 * <span class="zh-CN">当前构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<P> matchColumn(final String databaseName, final String tableName, final String columnName) {
+		public ColumnConditionBuilder<P> matchColumn(@Nonnull final String databaseName, final String tableName, final String columnName) {
 			this.condition.setParameter(new ColumnParameter(databaseName, tableName, columnName));
 			return this;
 		}
@@ -765,7 +867,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Current builder instance object</span>
 		 * <span class="zh-CN">当前构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<P> valueRange(@Nonnull final Object beginValue, @Nonnull final Object endValue) {
+		ColumnConditionBuilder<P> valueRange(@Nonnull final Object beginValue, @Nonnull final Object endValue) {
 			this.condition.setParameter(new RangesParameter(beginValue, endValue));
 			return this;
 		}
@@ -779,7 +881,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Current builder instance object</span>
 		 * <span class="zh-CN">当前构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<P> inArray(@Nonnull final Object... matchValues) {
+		ColumnConditionBuilder<P> inArray(@Nonnull final Object[] matchValues) {
 			this.condition.setParameter(new ArraysParameter(matchValues));
 			return this;
 		}
@@ -813,6 +915,71 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	}
 
 	/**
+	 * <h2 class="en-US">Exist conditions information builder</h2>
+	 * <h2 class="zh-CN">查询存在信息构建器</h2>
+	 *
+	 * @param <P> <span class="en-US">Parent builder generic type class</span>
+	 *            <span class="zh-CN">父构建器泛型类</span>
+	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
+	 * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
+	 */
+	public static final class ExistConditionBuilder<P extends ParentBuilder> extends ConditionBuilder<P, ExistCondition> {
+
+		/**
+		 * <span class="en-US">NOT prefix</span>
+		 * <span class="zh-CN">NOT前缀</span>
+		 */
+		private final boolean not;
+		/**
+		 * <span class="en-US">Sub-query information</span>
+		 * <span class="zh-CN">子查询信息</span>
+		 */
+		private QueryInfo queryInfo;
+
+		/**
+		 * <h3 class="en-US">Constructor method for the exist conditions information builder</h3>
+		 * <h3 class="zh-CN">查询存在信息构建器的构造方法</h3>
+		 *
+		 * @param parentBuilder  <span class="en-US">Parent builder instance object</span>
+		 *                       <span class="zh-CN">父构建器实例对象</span>
+		 * @param connectionCode <span class="en-US">Query connection code</span>
+		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param not            <span class="en-US">NOT prefix</span>
+		 *                       <span class="zh-CN">NOT前缀</span>
+		 */
+		public ExistConditionBuilder(final P parentBuilder, @Nonnull final ConnectionCode connectionCode, final boolean not) {
+			super(parentBuilder, new ExistCondition());
+			this.condition.setConnectionCode(connectionCode);
+			this.not = not;
+		}
+
+		/**
+		 * <h3 class="en-US">Sub-query information builder</h3>
+		 * <h3 class="zh-CN">子查询构建器</h3>
+		 *
+		 * @return <span class="en-US">Sub-query information builder instance object</span>
+		 * <span class="zh-CN">子查询构建器实例对象</span>
+		 */
+		public QueryBuilder<ExistConditionBuilder<P>> queryBuilder() {
+			return new QueryBuilder<>(this);
+		}
+
+		@Override
+		public void confirm(final Object object) throws BuilderException {
+			if (object instanceof QueryInfo) {
+				this.queryInfo = (QueryInfo) object;
+			}
+		}
+
+		@Override
+		public ExistCondition build() throws BuilderException {
+			this.condition.setNot(this.not);
+			this.condition.setQueryInfo(this.queryInfo);
+			return this.condition;
+		}
+	}
+
+	/**
 	 * <h2 class="en-US">Group conditions information builder</h2>
 	 * <h2 class="zh-CN">查询条件组信息构建器</h2>
 	 *
@@ -828,7 +995,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * <span class="en-US">Match condition list</span>
 		 * <span class="zh-CN">匹配条件列表</span>
 		 */
-		private final List<BaseCondition> conditionList;
+		private final List<AbstractCondition> conditionList;
 
 		/**
 		 * <h3 class="en-US">Constructor method for the group conditions information builder</h3>
@@ -839,7 +1006,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
 		 */
-		public GroupConditionBuilder(final P parentBuilder, final ConnectionCode connectionCode) {
+		public GroupConditionBuilder(final P parentBuilder, @Nonnull final ConnectionCode connectionCode) {
 			super(parentBuilder, new GroupCondition());
 			this.condition.setConnectionCode(connectionCode);
 			this.conditionList = new ArrayList<>();
@@ -849,240 +1016,282 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * <h3 class="en-US">Data column less condition information builder</h3>
 		 * <h3 class="zh-CN">数据列小于条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessThan(final String tableName, final String columnName) {
-			return this.lessThan(ConnectionCode.AND, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessThan(@Nonnull final String databaseName,
+		                                                                 @Nonnull final String tableName,
+		                                                                 @Nonnull final String columnName) {
+			return this.lessThan(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column less or equal condition information builder</h3>
 		 * <h3 class="zh-CN">数据列小于等于条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessEqual(final String tableName, final String columnName) {
-			return this.lessEqual(ConnectionCode.AND, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessEqual(@Nonnull final String databaseName,
+		                                                                  @Nonnull final String tableName,
+		                                                                  @Nonnull final String columnName) {
+			return this.lessEqual(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column greater condition information builder</h3>
 		 * <h3 class="zh-CN">数据列大于条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterThan(final String tableName, final String columnName) {
-			return this.greaterThan(ConnectionCode.AND, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterThan(@Nonnull final String databaseName,
+		                                                                    @Nonnull final String tableName,
+		                                                                    @Nonnull final String columnName) {
+			return this.greaterThan(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column greater or equal condition information builder</h3>
 		 * <h3 class="zh-CN">数据列大于等于条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterEqual(final String tableName, final String columnName) {
-			return this.greaterEqual(ConnectionCode.AND, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterEqual(@Nonnull final String databaseName,
+		                                                                     @Nonnull final String tableName,
+		                                                                     @Nonnull final String columnName) {
+			return this.greaterEqual(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column equal condition information builder</h3>
 		 * <h3 class="zh-CN">数据列等于条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> equalThan(final String tableName, final String columnName) {
-			return this.equalThan(ConnectionCode.AND, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> equalThan(@Nonnull final String databaseName,
+		                                                                  @Nonnull final String tableName,
+		                                                                  @Nonnull final String columnName) {
+			return this.equalThan(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column not equal condition information builder</h3>
 		 * <h3 class="zh-CN">数据列不等于条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notEqual(final String tableName, final String columnName) {
-			return this.notEqual(ConnectionCode.AND, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> notEqual(@Nonnull final String databaseName,
+		                                                                 @Nonnull final String tableName,
+		                                                                 @Nonnull final String columnName) {
+			return this.notEqual(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column in arrays condition information builder</h3>
 		 * <h3 class="zh-CN">数据列在数组中条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> in(final String tableName, final String columnName) {
-			return this.in(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> in(@Nonnull final String databaseName, @Nonnull final String tableName,
+		                                   @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+			return this.in(ConnectionCode.AND, databaseName, tableName, columnName, arrayObjects);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column not in arrays condition information builder</h3>
 		 * <h3 class="zh-CN">数据列不在数组中条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notIn(final String tableName, final String columnName) {
-			return this.notIn(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> notIn(@Nonnull final String databaseName, @Nonnull final String tableName,
+		                                      @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+			return this.notIn(ConnectionCode.AND, databaseName, tableName, columnName, arrayObjects);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column in ranges condition information builder</h3>
 		 * <h3 class="zh-CN">数据列在指定区间条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> betweenAnd(final String tableName, final String columnName) {
-			return this.betweenAnd(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> betweenAnd(@Nonnull final String databaseName,
+		                                           @Nonnull final String tableName, @Nonnull final String columnName,
+		                                           @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+			return this.betweenAnd(ConnectionCode.AND, databaseName, tableName, columnName, beginValue, endValue);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column in ranges condition information builder</h3>
 		 * <h3 class="zh-CN">数据列不在指定区间条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notBetweenAnd(final String tableName, final String columnName) {
-			return this.notBetweenAnd(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> notBetweenAnd(@Nonnull final String databaseName,
+		                                              @Nonnull final String tableName, @Nonnull final String columnName,
+		                                              @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+			return this.notBetweenAnd(ConnectionCode.AND, databaseName, tableName, columnName, beginValue, endValue);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column is null</h3>
 		 * <h3 class="zh-CN">数据列为空</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public GroupConditionBuilder<P> isNull(final String tableName, final String columnName) {
-			return this.isNull(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> isNull(@Nonnull final String databaseName, @Nonnull final String tableName,
+		                                       @Nonnull final String columnName) {
+			return this.isNull(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column not null</h3>
 		 * <h3 class="zh-CN">数据列不为空</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public GroupConditionBuilder<P> notNull(final String tableName, final String columnName) {
-			return this.notNull(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> notNull(@Nonnull final String databaseName, @Nonnull final String tableName,
+		                                        @Nonnull final String columnName) {
+			return this.notNull(ConnectionCode.AND, databaseName, tableName, columnName);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column similar condition information builder</h3>
 		 * <h3 class="zh-CN">数据列模糊匹配条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> similar(final String tableName, final String columnName) {
-			return this.similar(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> similar(@Nonnull final String databaseName, @Nonnull final String tableName,
+		                                        @Nonnull final String columnName, @Nonnull final String pattern) {
+			return this.similar(ConnectionCode.AND, databaseName, tableName, columnName, pattern);
 		}
 
 		/**
 		 * <h3 class="en-US">Data column is not similar condition information builder</h3>
 		 * <h3 class="zh-CN">数据列非模糊匹配条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
+		 * @param databaseName <span class="en-US">Database identify information</span>
+		 *                     <span class="zh-CN">数据库识别信息</span>
+		 * @param tableName    <span class="en-US">Data table name</span>
+		 *                     <span class="zh-CN">数据表名</span>
+		 * @param columnName   <span class="en-US">Data column name</span>
+		 *                     <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notSimilar(final String tableName, final String columnName) {
-			return this.notSimilar(ConnectionCode.AND, tableName, columnName);
+		public GroupConditionBuilder<P> notSimilar(@Nonnull final String databaseName, @Nonnull final String tableName,
+		                                           @Nonnull final String columnName, @Nonnull final String pattern) {
+			return this.notSimilar(ConnectionCode.AND, databaseName, tableName, columnName, pattern);
 		}
 
 		/**
 		 * <h3 class="en-US">Data exists condition information builder</h3>
 		 * <h3 class="zh-CN">数据存在条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> exists(final String tableName, final String columnName) {
-			return this.exists(ConnectionCode.AND, tableName, columnName);
+		public ExistConditionBuilder<GroupConditionBuilder<P>> exists() {
+			return this.exists(ConnectionCode.AND);
 		}
 
 		/**
 		 * <h3 class="en-US">Data don't exist condition information builder</h3>
 		 * <h3 class="zh-CN">数据不存在条件信息构建器</h3>
 		 *
-		 * @param tableName  <span class="en-US">Data table name</span>
-		 *                   <span class="zh-CN">数据表名</span>
-		 * @param columnName <span class="en-US">Data column name</span>
-		 *                   <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notExists(final String tableName, final String columnName) {
-			return this.notExists(ConnectionCode.AND, tableName, columnName);
+		public ExistConditionBuilder<GroupConditionBuilder<P>> notExists() {
+			return this.notExists(ConnectionCode.AND);
 		}
 
 		/**
@@ -1091,6 +1300,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1098,9 +1309,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessThan(final ConnectionCode connectionCode,
-		                                                                 final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.LESS_THAN, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessThan(@Nonnull final ConnectionCode connectionCode,
+		                                                                 @Nonnull final String databaseName,
+		                                                                 @Nonnull final String tableName,
+		                                                                 @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.LESS_THAN, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1109,6 +1322,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1116,9 +1331,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessEqual(final ConnectionCode connectionCode,
-		                                                                  final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.LESS_EQUAL, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> lessEqual(@Nonnull final ConnectionCode connectionCode,
+		                                                                  @Nonnull final String databaseName,
+		                                                                  @Nonnull final String tableName,
+		                                                                  @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.LESS_EQUAL, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1127,6 +1344,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1134,9 +1353,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterThan(final ConnectionCode connectionCode,
-		                                                                    final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.GREATER_THAN, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterThan(@Nonnull final ConnectionCode connectionCode,
+		                                                                    @Nonnull final String databaseName,
+		                                                                    @Nonnull final String tableName,
+		                                                                    @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.GREATER_THAN, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1145,6 +1366,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1152,9 +1375,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterEqual(final ConnectionCode connectionCode,
-		                                                                     final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.GREATER_EQUAL, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> greaterEqual(@Nonnull final ConnectionCode connectionCode,
+		                                                                     @Nonnull final String databaseName,
+		                                                                     @Nonnull final String tableName,
+		                                                                     @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.GREATER_EQUAL, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1163,6 +1388,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1170,9 +1397,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> equalThan(final ConnectionCode connectionCode,
-		                                                                  final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.EQUAL_THAN, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> equalThan(@Nonnull final ConnectionCode connectionCode,
+		                                                                  @Nonnull final String databaseName,
+		                                                                  @Nonnull final String tableName,
+		                                                                  @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.EQUAL_THAN, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1181,6 +1410,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1188,9 +1419,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notEqual(final ConnectionCode connectionCode,
-		                                                                 final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.NOT_EQUAL, tableName, columnName);
+		public ColumnConditionBuilder<GroupConditionBuilder<P>> notEqual(@Nonnull final ConnectionCode connectionCode,
+		                                                                 @Nonnull final String databaseName,
+		                                                                 @Nonnull final String tableName,
+		                                                                 @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.NOT_EQUAL, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1199,6 +1432,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1206,9 +1441,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> in(final ConnectionCode connectionCode,
-		                                                           final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.IN, tableName, columnName);
+		public GroupConditionBuilder<P> in(@Nonnull final ConnectionCode connectionCode,
+		                                   @Nonnull final String databaseName, @Nonnull final String tableName,
+		                                   @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+			return this.column(connectionCode, ConditionCode.IN, databaseName, tableName, columnName)
+					.inArray(arrayObjects)
+					.confirm();
 		}
 
 		/**
@@ -1217,6 +1455,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1224,9 +1464,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notIn(final ConnectionCode connectionCode,
-		                                                              final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.NOT_IN, tableName, columnName);
+		public GroupConditionBuilder<P> notIn(@Nonnull final ConnectionCode connectionCode,
+		                                      @Nonnull final String databaseName, @Nonnull final String tableName,
+		                                      @Nonnull final String columnName, @Nonnull final Object[] arrayObjects) {
+			return this.column(connectionCode, ConditionCode.NOT_IN, databaseName, tableName, columnName)
+					.inArray(arrayObjects)
+					.confirm();
 		}
 
 		/**
@@ -1235,6 +1478,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1242,9 +1487,13 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> betweenAnd(final ConnectionCode connectionCode,
-		                                                                   final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.BETWEEN_AND, tableName, columnName);
+		public GroupConditionBuilder<P> betweenAnd(@Nonnull final ConnectionCode connectionCode,
+		                                           @Nonnull final String databaseName,
+		                                           @Nonnull final String tableName, @Nonnull final String columnName,
+		                                           @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+			return this.column(connectionCode, ConditionCode.BETWEEN_AND, databaseName, tableName, columnName)
+					.valueRange(beginValue, endValue)
+					.confirm();
 		}
 
 		/**
@@ -1253,6 +1502,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1260,9 +1511,13 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notBetweenAnd(final ConnectionCode connectionCode,
-		                                                                      final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.NOT_BETWEEN_AND, tableName, columnName);
+		public GroupConditionBuilder<P> notBetweenAnd(@Nonnull final ConnectionCode connectionCode,
+		                                              @Nonnull final String databaseName,
+		                                              @Nonnull final String tableName, @Nonnull final String columnName,
+		                                              @Nonnull final Object beginValue, @Nonnull final Object endValue) {
+			return this.column(connectionCode, ConditionCode.NOT_BETWEEN_AND, databaseName, tableName, columnName)
+					.valueRange(beginValue, endValue)
+					.confirm();
 		}
 
 		/**
@@ -1271,6 +1526,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1278,9 +1535,10 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public GroupConditionBuilder<P> isNull(final ConnectionCode connectionCode,
-		                                       final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.IS_NULL, tableName, columnName).confirm();
+		public GroupConditionBuilder<P> isNull(@Nonnull final ConnectionCode connectionCode,
+		                                       @Nonnull final String databaseName, @Nonnull final String tableName,
+		                                       @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.IS_NULL, databaseName, tableName, columnName).confirm();
 		}
 
 		/**
@@ -1289,6 +1547,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1296,9 +1556,10 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public GroupConditionBuilder<P> notNull(final ConnectionCode connectionCode,
-		                                        final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.NOT_NULL, tableName, columnName).confirm();
+		public GroupConditionBuilder<P> notNull(@Nonnull final ConnectionCode connectionCode,
+		                                        @Nonnull final String databaseName, @Nonnull final String tableName,
+		                                        @Nonnull final String columnName) {
+			return this.column(connectionCode, ConditionCode.NOT_NULL, databaseName, tableName, columnName).confirm();
 		}
 
 		/**
@@ -1307,6 +1568,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1314,9 +1577,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> similar(final ConnectionCode connectionCode,
-		                                                                final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.SIMILAR_THAN, tableName, columnName);
+		public GroupConditionBuilder<P> similar(@Nonnull final ConnectionCode connectionCode,
+		                                        @Nonnull final String databaseName, @Nonnull final String tableName,
+		                                        @Nonnull final String columnName, @Nonnull final String pattern) {
+			return this.column(connectionCode, ConditionCode.SIMILAR_THAN, databaseName, tableName, columnName)
+					.matchValue(pattern)
+					.confirm();
 		}
 
 		/**
@@ -1325,6 +1591,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1332,9 +1600,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notSimilar(final ConnectionCode connectionCode,
-		                                                                   final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.NOT_SIMILAR, tableName, columnName);
+		public GroupConditionBuilder<P> notSimilar(@Nonnull final ConnectionCode connectionCode,
+		                                           @Nonnull final String databaseName, @Nonnull final String tableName,
+		                                           @Nonnull final String columnName, @Nonnull final String pattern) {
+			return this.column(connectionCode, ConditionCode.NOT_SIMILAR, databaseName, tableName, columnName)
+					.matchValue(pattern)
+					.confirm();
 		}
 
 		/**
@@ -1343,16 +1614,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
-		 * @param tableName      <span class="en-US">Data table name</span>
-		 *                       <span class="zh-CN">数据表名</span>
-		 * @param columnName     <span class="en-US">Data column name</span>
-		 *                       <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> exists(final ConnectionCode connectionCode,
-		                                                               final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.EXISTS, tableName, columnName);
+		public ExistConditionBuilder<GroupConditionBuilder<P>> exists(@Nonnull final ConnectionCode connectionCode) {
+			return new ExistConditionBuilder<>(this, connectionCode, Boolean.FALSE);
 		}
 
 		/**
@@ -1361,16 +1627,11 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *
 		 * @param connectionCode <span class="en-US">Query connection code</span>
 		 *                       <span class="zh-CN">查询条件连接代码</span>
-		 * @param tableName      <span class="en-US">Data table name</span>
-		 *                       <span class="zh-CN">数据表名</span>
-		 * @param columnName     <span class="en-US">Data column name</span>
-		 *                       <span class="zh-CN">数据列名</span>
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		public ColumnConditionBuilder<GroupConditionBuilder<P>> notExists(final ConnectionCode connectionCode,
-		                                                                  final String tableName, final String columnName) {
-			return this.column(connectionCode, ConditionCode.NOT_EXISTS, tableName, columnName);
+		public ExistConditionBuilder<GroupConditionBuilder<P>> notExists(@Nonnull final ConnectionCode connectionCode) {
+			return new ExistConditionBuilder<>(this, connectionCode, Boolean.TRUE);
 		}
 
 		/**
@@ -1381,6 +1642,8 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 *                       <span class="zh-CN">查询条件连接代码</span>
 		 * @param conditionCode  <span class="en-US">Query condition code</span>
 		 *                       <span class="zh-CN">查询条件运算代码</span>
+		 * @param databaseName   <span class="en-US">Database identify information</span>
+		 *                       <span class="zh-CN">数据库识别信息</span>
 		 * @param tableName      <span class="en-US">Data table name</span>
 		 *                       <span class="zh-CN">数据表名</span>
 		 * @param columnName     <span class="en-US">Data column name</span>
@@ -1388,10 +1651,12 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Data column query condition information builder instance object</span>
 		 * <span class="zh-CN">数据列查询信息构建器实例对象</span>
 		 */
-		private ColumnConditionBuilder<GroupConditionBuilder<P>> column(final ConnectionCode connectionCode,
-		                                                                final ConditionCode conditionCode,
-		                                                                final String tableName, final String columnName) {
-			return new ColumnConditionBuilder<>(this, connectionCode, conditionCode, tableName, columnName);
+		private ColumnConditionBuilder<GroupConditionBuilder<P>> column(@Nonnull final ConnectionCode connectionCode,
+		                                                                @Nonnull final ConditionCode conditionCode,
+		                                                                @Nonnull final String databaseName,
+		                                                                @Nonnull final String tableName,
+		                                                                @Nonnull final String columnName) {
+			return new ColumnConditionBuilder<>(this, connectionCode, conditionCode, databaseName, tableName, columnName);
 		}
 
 		/**
@@ -1414,14 +1679,14 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">Group query condition information builder instance object</span>
 		 * <span class="zh-CN">查询信息组构建器实例对象</span>
 		 */
-		public GroupConditionBuilder<GroupConditionBuilder<P>> group(final ConnectionCode connectionCode) {
+		public GroupConditionBuilder<GroupConditionBuilder<P>> group(@Nonnull final ConnectionCode connectionCode) {
 			return new GroupConditionBuilder<>(this, connectionCode);
 		}
 
 		@Override
 		public void confirm(final Object object) throws BuilderException {
-			if (object instanceof BaseCondition) {
-				this.conditionList.add((BaseCondition) object);
+			if (object instanceof AbstractCondition) {
+				this.conditionList.add((AbstractCondition) object);
 			}
 		}
 
@@ -1446,7 +1711,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * <span class="zh-CN">查询条件实例对象列表</span>
 		 */
 		@Nonnull
-		private final List<BaseCondition> conditions;
+		private final List<AbstractCondition> conditions;
 		/**
 		 * <span class="en-US">Having condition flag</span>
 		 * <span class="zh-CN">Having字句条件标记</span>
@@ -1462,7 +1727,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * @param having     <span class="en-US">Having condition flag</span>
 		 *                   <span class="zh-CN">Having字句条件标记</span>
 		 */
-		public Conditions(@Nonnull final List<BaseCondition> conditions, final boolean having) {
+		public Conditions(@Nonnull final List<AbstractCondition> conditions, final boolean having) {
 			this.conditions = conditions;
 			this.having = having;
 		}
@@ -1475,7 +1740,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 		 * <span class="zh-CN">查询条件实例对象列表</span>
 		 */
 		@Nonnull
-		public List<BaseCondition> getConditions() {
+		public List<AbstractCondition> getConditions() {
 			return this.conditions;
 		}
 
@@ -1498,7 +1763,7 @@ public final class ConditionsBuilder<P extends ParentBuilder> extends AbstractBu
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
 	 */
-	private static abstract class ConditionBuilder<P extends ParentBuilder, T extends BaseCondition>
+	private static abstract class ConditionBuilder<P extends ParentBuilder, T extends AbstractCondition>
 			extends AbstractBuilder<P, T> {
 
 		/**

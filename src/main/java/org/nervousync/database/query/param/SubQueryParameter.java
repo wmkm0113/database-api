@@ -21,7 +21,7 @@ import jakarta.xml.bind.annotation.*;
 import org.nervousync.commons.Globals;
 import org.nervousync.database.enumerations.ItemType;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseParameter;
+import org.nervousync.database.query.core.AbstractParameter;
 
 /**
  * <h2 class="en-US">Sub-query parameter information define</h2>
@@ -33,7 +33,7 @@ import org.nervousync.database.query.core.BaseParameter;
 @XmlType(name = "query_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "query_parameter", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class QueryParameter extends BaseParameter {
+public final class SubQueryParameter extends AbstractParameter {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -58,7 +58,7 @@ public final class QueryParameter extends BaseParameter {
 	 * <h3 class="en-US">Constructor method for sub-query parameter information</h3>
 	 * <h3 class="zh-CN">子查询参数定义的构造方法</h3>
 	 */
-	public QueryParameter() {
+	public SubQueryParameter() {
 		super(ItemType.QUERY);
 	}
 

@@ -20,7 +20,7 @@ package org.nervousync.database.query.join;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.CategoryType;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseJoin;
+import org.nervousync.database.query.core.AbstractJoin;
 
 /**
  * <h2 class="en-US">Query join sub-query information defines</h2>
@@ -32,7 +32,7 @@ import org.nervousync.database.query.core.BaseJoin;
 @XmlType(name = "query_join", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "query_join", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class QueryJoin extends BaseJoin {
+public final class QueryJoin extends AbstractJoin {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>

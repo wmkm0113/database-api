@@ -30,9 +30,9 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 28, 2020 11:46:08 $
  */
-@XmlType(name = "result_map", namespace = "https://nervousync.org/schemas/database")
+@XmlType(name = "result_list", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class ResultMap implements Serializable {
+public final class ResultList implements Serializable {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -41,8 +41,15 @@ public final class ResultMap implements Serializable {
 	private static final long serialVersionUID = 2314522560232437367L;
 
 	/**
-	 * <span class="en-US">Data item information list</span>
-	 * <span class="zh-CN">数据项信息列表</span>
+	 * <span class="en-US">Data column meta information list</span>
+	 * <span class="zh-CN">数据列元数据信息列表</span>
+	 */
+	@XmlElement(name = "meta_data")
+	@XmlElementWrapper(name = "meta_list")
+	private List<ResultMeta> metaList;
+	/**
+	 * <span class="en-US">Data record information list</span>
+	 * <span class="zh-CN">数据记录信息列表</span>
 	 */
 	@XmlElement(name = "result_data")
 	@XmlElementWrapper(name = "data_list")
@@ -52,27 +59,50 @@ public final class ResultMap implements Serializable {
 	 * <h3 class="en-US">Constructor method for the query result map defines</h3>
 	 * <h3 class="zh-CN">查询结果集定义的构造方法</h3>
 	 */
-	public ResultMap() {
+	public ResultList() {
+		this.metaList = new ArrayList<>();
 		this.dataList = new ArrayList<>();
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for the data item information list</h3>
-	 * <h3 class="zh-CN">数据项信息列表的 Getter 方法</h3>
+	 * <h3 class="en-US">Getter method for the data column meta information list</h3>
+	 * <h3 class="zh-CN">数据列元数据信息列表的 Getter 方法</h3>
 	 *
-	 * @return <span class="en-US">Data item information list</span>
-	 * <span class="zh-CN">数据项信息列表</span>
+	 * @return <span class="en-US">Data column meta information list</span>
+	 * <span class="zh-CN">数据列元数据信息列表</span>
+	 */
+	public List<ResultMeta> getMetaList() {
+		return this.metaList;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the data column meta information list</h3>
+	 * <h3 class="zh-CN">数据列元数据信息列表的 Setter 方法</h3>
+	 *
+	 * @param metaList <span class="en-US">Data column meta information list</span>
+	 *                 <span class="zh-CN">数据列元数据信息列表</span>
+	 */
+	public void setMetaList(final List<ResultMeta> metaList) {
+		this.metaList = metaList;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the data record information list</h3>
+	 * <h3 class="zh-CN">数据记录信息列表的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Data record information list</span>
+	 * <span class="zh-CN">数据记录信息列表</span>
 	 */
 	public List<ResultData> getDataList() {
 		return this.dataList;
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for the data item information list</h3>
-	 * <h3 class="zh-CN">数据项信息列表的 Setter 方法</h3>
+	 * <h3 class="en-US">Setter method for the data record information list</h3>
+	 * <h3 class="zh-CN">数据记录信息列表的 Setter 方法</h3>
 	 *
-	 * @param dataList <span class="en-US">Data item information list</span>
-	 *                 <span class="zh-CN">数据项信息列表</span>
+	 * @param dataList <span class="en-US">Data record information list</span>
+	 *                 <span class="zh-CN">数据记录信息列表</span>
 	 */
 	public void setDataList(final List<ResultData> dataList) {
 		this.dataList = dataList;

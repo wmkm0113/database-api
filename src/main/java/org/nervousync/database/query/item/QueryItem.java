@@ -15,44 +15,44 @@
  * limitations under the License.
  */
 
-package org.nervousync.database.query.from;
+package org.nervousync.database.query.item;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.database.enumerations.CategoryType;
+import org.nervousync.database.enumerations.ItemType;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.AbstractFrom;
+import org.nervousync.database.query.core.AbstractItem;
 
 /**
- * <h2 class="en-US">Query from sub-query definition</h2>
- * <h2 class="zh-CN">查询来源子查询定义</h2>
+ * <h2 class="en-US">Scalar sub-query information define</h2>
+ * <h2 class="zh-CN">标量子查询信息定义</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Oct 9, 2020 11:42:19 $
  */
-@XmlType(name = "from_query", namespace = "https://nervousync.org/schemas/database")
-@XmlRootElement(name = "from_query", namespace = "https://nervousync.org/schemas/database")
+@XmlType(name = "query_item", namespace = "https://nervousync.org/schemas/database")
+@XmlRootElement(name = "query_item", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class FromQuery extends AbstractFrom {
+public final class QueryItem extends AbstractItem {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
-	private static final long serialVersionUID = -6504876902805709275L;
+	private static final long serialVersionUID = -8885263317043765606L;
 
 	/**
 	 * <span class="en-US">Sub-query information</span>
 	 * <span class="zh-CN">子查询信息</span>
 	 */
-	@XmlElement(name = "query_info")
-	private QueryInfo queryInfo = null;
+	@XmlElement(name = "sub_query")
+	private QueryInfo queryInfo;
 
 	/**
-	 * <h3 class="en-US">Constructor method for the query from sub-query definition</h3>
-	 * <h3 class="zh-CN">查询来源子查询定义的构造方法</h3>
+	 * <h3 class="en-US">Constructor method for abstract query item define</h3>
+	 * <h3 class="zh-CN">抽象查询项信息定义的构造方法</h3>
 	 */
-	public FromQuery() {
-		super(CategoryType.SubQuery);
+	public QueryItem() {
+		super(ItemType.QUERY);
 	}
 
 	/**

@@ -44,6 +44,12 @@ public final class GroupColumn implements Serializable {
 	private static final long serialVersionUID = -7703148998062830489L;
 
 	/**
+	 * <span class="en-US">Database identify information</span>
+	 * <span class="zh-CN">数据库识别信息</span>
+	 */
+	@XmlElement(name = "database_name")
+	private String databaseName;
+	/**
 	 * <span class="en-US">Data table name</span>
 	 * <span class="zh-CN">数据表名</span>
 	 */
@@ -67,14 +73,40 @@ public final class GroupColumn implements Serializable {
 	 * <h3 class="en-US">Constructor method for the query group by column definition</h3>
 	 * <h3 class="zh-CN">查询分组列信息定义的构造方法</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 */
-	public GroupColumn(@Nonnull final String tableName, @Nonnull final String columnName) {
+	public GroupColumn(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                   @Nonnull final String columnName) {
+		this.databaseName = databaseName;
 		this.tableName = tableName;
 		this.columnName = columnName;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the database identify information</h3>
+	 * <h3 class="zh-CN">数据库识别信息的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Database identify information</span>
+	 * <span class="zh-CN">数据库识别信息</span>
+	 */
+	public String getDatabaseName() {
+		return this.databaseName;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the database identify information</h3>
+	 * <h3 class="zh-CN">数据库识别信息的 Setter 方法</h3>
+	 *
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 */
+	public void setDatabaseName(final String databaseName) {
+		this.databaseName = databaseName;
 	}
 
 	/**
@@ -125,6 +157,8 @@ public final class GroupColumn implements Serializable {
 	 * <h3 class="en-US">Checks whether the given parameter value matches the current information</h3>
 	 * <h3 class="zh-CN">检查给定的参数值是否与当前信息匹配</h3>
 	 *
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
 	 * @param tableName  <span class="en-US">Data table name</span>
 	 *                   <span class="zh-CN">数据表名</span>
 	 * @param columnName <span class="en-US">Data column name</span>
@@ -132,8 +166,9 @@ public final class GroupColumn implements Serializable {
 	 * @return <span class="en-US">Match result</span>
 	 * <span class="zh-CN">匹配结果</span>
 	 */
-	public boolean match(final String tableName, final String columnName) {
-		return ObjectUtils.nullSafeEquals(tableName, this.tableName)
+	public boolean match(final String databaseName, final String tableName, final String columnName) {
+		return ObjectUtils.nullSafeEquals(databaseName, this.databaseName)
+				&& ObjectUtils.nullSafeEquals(tableName, this.tableName)
 				&& ObjectUtils.nullSafeEquals(columnName, this.columnName);
 	}
 }

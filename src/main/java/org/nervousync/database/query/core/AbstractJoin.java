@@ -40,7 +40,7 @@ import java.util.List;
 @XmlSeeAlso({TableJoin.class, QueryJoin.class})
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class BaseJoin extends WrapperImpl {
+public abstract class AbstractJoin extends WrapperImpl {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -73,6 +73,17 @@ public abstract class BaseJoin extends WrapperImpl {
 	@XmlElement(name = "join_info")
 	@XmlElementWrapper(name = "join_info_list")
 	private List<JoinInfo> joinInfos = new ArrayList<>();
+	/**
+	 * <span class="en-US">Related query information list</span>
+	 * <span class="zh-CN">关联查询信息列表</span>
+	 */
+	@XmlElementRefs({
+			@XmlElementRef(name = "table_join", type = TableJoin.class),
+			@XmlElementRef(name = "query_join", type = QueryJoin.class),
+
+	})
+	@XmlElementWrapper(name = "join_list")
+	private List<AbstractJoin> joinList = new ArrayList<>();
 
 	/**
 	 * <h3 class="en-US">Constructor method for the abstract query join information defines</h3>
@@ -81,7 +92,7 @@ public abstract class BaseJoin extends WrapperImpl {
 	 * @param categoryType <span class="en-US">Enumeration value of category type</span>
 	 *                     <span class="zh-CN">分类类型的枚举值</span>
 	 */
-	protected BaseJoin(final CategoryType categoryType) {
+	protected AbstractJoin(final CategoryType categoryType) {
 		this.categoryType = categoryType;
 	}
 
@@ -160,5 +171,27 @@ public abstract class BaseJoin extends WrapperImpl {
 	 */
 	public void setJoinInfos(final List<JoinInfo> joinInfos) {
 		this.joinInfos = (joinInfos == null) ? Collections.emptyList() : joinInfos;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the related query information list</h3>
+	 * <h3 class="zh-CN">关联查询信息列表的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Related query information list</span>
+	 * <span class="zh-CN">关联查询信息列表</span>
+	 */
+	public List<AbstractJoin> getJoinList() {
+		return this.joinList;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the related query information list</h3>
+	 * <h3 class="zh-CN">关联查询信息列表的 Setter 方法</h3>
+	 *
+	 * @param joinList <span class="en-US">Related query information list</span>
+	 *                 <span class="zh-CN">关联查询信息列表</span>
+	 */
+	public void setJoinList(final List<AbstractJoin> joinList) {
+		this.joinList = joinList;
 	}
 }

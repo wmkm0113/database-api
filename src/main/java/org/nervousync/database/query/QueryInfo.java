@@ -20,10 +20,11 @@ package org.nervousync.database.query;
 import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.query.condition.ColumnCondition;
+import org.nervousync.database.query.condition.ExistCondition;
 import org.nervousync.database.query.condition.GroupCondition;
-import org.nervousync.database.query.core.BaseCondition;
-import org.nervousync.database.query.core.BaseFrom;
-import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.core.AbstractCondition;
+import org.nervousync.database.query.core.AbstractFrom;
+import org.nervousync.database.query.core.AbstractItem;
 import org.nervousync.database.query.from.FromQuery;
 import org.nervousync.database.query.from.FromTable;
 import org.nervousync.database.query.group.GroupColumn;
@@ -63,10 +64,10 @@ public final class QueryInfo implements Serializable {
 			@XmlElement(name = "column_item", type = ColumnItem.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "constant_item", type = ConstantItem.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "function_item", type = FunctionItem.class, namespace = "https://nervousync.org/schemas/database"),
-			@XmlElement(name = "query_item", type = SubQueryItem.class, namespace = "https://nervousync.org/schemas/database")
+			@XmlElement(name = "query_item", type = QueryItem.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "item_list")
-	private List<BaseItem> queryItems = new ArrayList<>();
+	private List<AbstractItem> queryItems = new ArrayList<>();
 	/**
 	 * <span class="en-US">Query from information</span>
 	 * <span class="zh-CN">查询来源信息</span>
@@ -75,17 +76,18 @@ public final class QueryInfo implements Serializable {
 			@XmlElement(name = "from_query", type = FromQuery.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "from_table", type = FromTable.class, namespace = "https://nervousync.org/schemas/database")
 	})
-	private BaseFrom queryFrom;
+	private AbstractFrom queryFrom;
 	/**
 	 * <span class="en-US">Query condition instance list</span>
 	 * <span class="zh-CN">查询条件实例对象列表</span>
 	 */
 	@XmlElements({
 			@XmlElement(name = "column_condition", type = ColumnCondition.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "exist_condition", type = ExistCondition.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "group_condition", type = GroupCondition.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "where_list")
-	private List<BaseCondition> whereClause;
+	private List<AbstractCondition> whereClause;
 	/**
 	 * <span class="en-US">Group column identify key list</span>
 	 * <span class="zh-CN">分组识别代码列表</span>
@@ -99,10 +101,11 @@ public final class QueryInfo implements Serializable {
 	 */
 	@XmlElements({
 			@XmlElement(name = "column_condition", type = ColumnCondition.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "exist_condition", type = ExistCondition.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "group_condition", type = GroupCondition.class, namespace = "https://nervousync.org/schemas/database")
 	})
 	@XmlElementWrapper(name = "having_list")
-	private List<BaseCondition> havingClause;
+	private List<AbstractCondition> havingClause;
 	/**
 	 * <span class="en-US">Query order by columns' list</span>
 	 * <span class="zh-CN">查询排序数据列列表</span>
@@ -132,7 +135,7 @@ public final class QueryInfo implements Serializable {
 	 * <span class="zh-CN">查询项目实例对象列表</span>
 	 */
 	@Nonnull
-	public List<BaseItem> getQueryItems() {
+	public List<AbstractItem> getQueryItems() {
 		return this.queryItems;
 	}
 
@@ -143,7 +146,7 @@ public final class QueryInfo implements Serializable {
 	 * @param queryItems <span class="en-US">Query item instance list</span>
 	 *                   <span class="zh-CN">查询项目实例对象列表</span>
 	 */
-	public void setQueryItems(@Nonnull final List<BaseItem> queryItems) {
+	public void setQueryItems(@Nonnull final List<AbstractItem> queryItems) {
 		this.queryItems = queryItems;
 	}
 
@@ -154,7 +157,7 @@ public final class QueryInfo implements Serializable {
 	 * @return <span class="en-US">Query from information</span>
 	 * <span class="zh-CN">查询来源信息</span>
 	 */
-	public BaseFrom getQueryFrom() {
+	public AbstractFrom getQueryFrom() {
 		return this.queryFrom;
 	}
 
@@ -165,7 +168,7 @@ public final class QueryInfo implements Serializable {
 	 * @param queryFrom <span class="en-US">Query from information</span>
 	 *                  <span class="zh-CN">查询来源信息</span>
 	 */
-	public void setQueryFrom(final BaseFrom queryFrom) {
+	public void setQueryFrom(final AbstractFrom queryFrom) {
 		this.queryFrom = queryFrom;
 	}
 
@@ -176,7 +179,7 @@ public final class QueryInfo implements Serializable {
 	 * @return <span class="en-US">Query condition instance list</span>
 	 * <span class="zh-CN">查询条件实例对象列表</span>
 	 */
-	public List<BaseCondition> getWhereClause() {
+	public List<AbstractCondition> getWhereClause() {
 		return this.whereClause;
 	}
 
@@ -187,7 +190,7 @@ public final class QueryInfo implements Serializable {
 	 * @param whereClause <span class="en-US">Query condition instance list</span>
 	 *                    <span class="zh-CN">查询条件实例对象列表</span>
 	 */
-	public void setWhereClause(final List<BaseCondition> whereClause) {
+	public void setWhereClause(final List<AbstractCondition> whereClause) {
 		this.whereClause = whereClause;
 	}
 
@@ -220,7 +223,7 @@ public final class QueryInfo implements Serializable {
 	 * @return <span class="en-US">Group having condition instance list</span>
 	 * <span class="zh-CN">分组筛选条件实例对象列表</span>
 	 */
-	public List<BaseCondition> getHavingClause() {
+	public List<AbstractCondition> getHavingClause() {
 		return this.havingClause;
 	}
 
@@ -231,7 +234,7 @@ public final class QueryInfo implements Serializable {
 	 * @param havingClause <span class="en-US">Group having condition instance list</span>
 	 *                     <span class="zh-CN">分组筛选条件实例对象列表</span>
 	 */
-	public void setHavingClause(final List<BaseCondition> havingClause) {
+	public void setHavingClause(final List<AbstractCondition> havingClause) {
 		this.havingClause = havingClause;
 	}
 

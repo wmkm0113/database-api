@@ -39,5 +39,10 @@ public enum ConditionType {
 	 * <span class="en-US">Condition constant</span>
 	 * <span class="zh-CN">固定值</span>
 	 */
-	CONSTANT
+	CONSTANT,
+	/**
+	 * <span class="en-US">Sub-query (EXIST or NOT EXIST condition)</span>
+	 * <span class="zh-CN">子查询（EXIST 或 NOT EXIST 关键字）</span>
+	 */
+	EXIST
 }

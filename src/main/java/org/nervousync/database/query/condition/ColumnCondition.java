@@ -20,8 +20,8 @@ package org.nervousync.database.query.condition;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.database.enumerations.ConditionCode;
 import org.nervousync.database.enumerations.ConditionType;
-import org.nervousync.database.query.core.BaseCondition;
-import org.nervousync.database.query.core.BaseParameter;
+import org.nervousync.database.query.core.AbstractCondition;
+import org.nervousync.database.query.core.AbstractParameter;
 import org.nervousync.database.query.param.*;
 
 /**
@@ -34,7 +34,7 @@ import org.nervousync.database.query.param.*;
 @XmlType(name = "column_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlRootElement(name = "column_condition", namespace = "https://nervousync.org/schemas/database")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class ColumnCondition extends BaseCondition {
+public final class ColumnCondition extends AbstractCondition {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -48,6 +48,12 @@ public final class ColumnCondition extends BaseCondition {
 	 */
 	@XmlElement(name = "condition_code")
 	private ConditionCode conditionCode;
+	/**
+	 * <span class="en-US">Database identify information</span>
+	 * <span class="zh-CN">数据库识别信息</span>
+	 */
+	@XmlElement(name = "database_name")
+	private String databaseName;
 	/**
 	 * <span class="en-US">Data table name</span>
 	 * <span class="zh-CN">数据表名</span>
@@ -76,10 +82,10 @@ public final class ColumnCondition extends BaseCondition {
 			@XmlElement(name = "column_parameter", type = ColumnParameter.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "constant_parameter", type = ConstantParameter.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "function_parameter", type = FunctionParameter.class, namespace = "https://nervousync.org/schemas/database"),
-			@XmlElement(name = "query_parameter", type = QueryParameter.class, namespace = "https://nervousync.org/schemas/database"),
+			@XmlElement(name = "query_parameter", type = SubQueryParameter.class, namespace = "https://nervousync.org/schemas/database"),
 			@XmlElement(name = "ranges_parameter", type = RangesParameter.class, namespace = "https://nervousync.org/schemas/database")
 	})
-	private BaseParameter parameter;
+	private AbstractParameter parameter;
 
 	/**
 	 * <h3 class="en-US">Constructor method for query column condition information define</h3>
@@ -109,6 +115,28 @@ public final class ColumnCondition extends BaseCondition {
 	 */
 	public void setConditionCode(final ConditionCode conditionCode) {
 		this.conditionCode = conditionCode;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the database identify information</h3>
+	 * <h3 class="zh-CN">数据库识别信息的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Database identify information</span>
+	 * <span class="zh-CN">数据库识别信息</span>
+	 */
+	public String getDatabaseName() {
+		return this.databaseName;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the database identify information</h3>
+	 * <h3 class="zh-CN">数据库识别信息的 Setter 方法</h3>
+	 *
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 */
+	public void setDatabaseName(final String databaseName) {
+		this.databaseName = databaseName;
 	}
 
 	/**
@@ -184,7 +212,7 @@ public final class ColumnCondition extends BaseCondition {
 	 * @return <span class="en-US">Condition parameter information</span>
 	 * <span class="zh-CN">匹配参数信息</span>
 	 */
-	public BaseParameter getParameter() {
+	public AbstractParameter getParameter() {
 		return this.parameter;
 	}
 
@@ -195,7 +223,7 @@ public final class ColumnCondition extends BaseCondition {
 	 * @param parameter <span class="en-US">Condition parameter information</span>
 	 *                  <span class="zh-CN">匹配参数信息</span>
 	 */
-	public void setParameter(final BaseParameter parameter) {
+	public void setParameter(final AbstractParameter parameter) {
 		this.parameter = parameter;
 	}
 }

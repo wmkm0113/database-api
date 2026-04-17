@@ -17,15 +17,16 @@
 
 package org.nervousync.database.query.builder;
 
+import jakarta.annotation.Nonnull;
 import org.nervousync.builder.AbstractBuilder;
 import org.nervousync.builder.ParentBuilder;
 import org.nervousync.commons.Globals;
 import org.nervousync.database.enumerations.OrderType;
 import org.nervousync.database.exceptions.MultilingualSQLException;
 import org.nervousync.database.query.QueryInfo;
-import org.nervousync.database.query.core.BaseCondition;
-import org.nervousync.database.query.core.BaseFrom;
-import org.nervousync.database.query.core.BaseItem;
+import org.nervousync.database.query.core.AbstractCondition;
+import org.nervousync.database.query.core.AbstractFrom;
+import org.nervousync.database.query.core.AbstractItem;
 import org.nervousync.database.query.group.GroupColumn;
 import org.nervousync.database.query.order.OrderColumn;
 import org.nervousync.database.query.pager.PageLimit;
@@ -49,17 +50,17 @@ public final class QueryBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * <span class="en-US">Query item instance list</span>
 	 * <span class="zh-CN">查询项目实例对象列表</span>
 	 */
-	private List<BaseItem> queryItems = new ArrayList<>();
+	private List<AbstractItem> queryItems = new ArrayList<>();
 	/**
 	 * <span class="en-US">Query from information list</span>
 	 * <span class="zh-CN">查询来源信息列表</span>
 	 */
-	private BaseFrom queryFrom = null;
+	private AbstractFrom queryFrom = null;
 	/**
 	 * <span class="en-US">Query condition instance list</span>
 	 * <span class="zh-CN">查询条件实例对象列表</span>
 	 */
-	private List<BaseCondition> whereClause = new ArrayList<>();
+	private List<AbstractCondition> whereClause = new ArrayList<>();
 	/**
 	 * <span class="en-US">Identify key</span>
 	 * <span class="zh-CN">分组识别代码列表</span>
@@ -69,7 +70,7 @@ public final class QueryBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * <span class="en-US">Group having condition instance list</span>
 	 * <span class="zh-CN">分组筛选条件实例对象列表</span>
 	 */
-	private List<BaseCondition> havingClause = new ArrayList<>();
+	private List<AbstractCondition> havingClause = new ArrayList<>();
 	/**
 	 * <span class="en-US">Query order by columns' list</span>
 	 * <span class="zh-CN">查询排序数据列列表</span>
@@ -141,16 +142,19 @@ public final class QueryBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * <h3 class="en-US">Query group by information builder</h3>
 	 * <h3 class="zh-CN">查询分组列信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
 	 * @return <span class="en-US">Query group by information builder instance object</span>
 	 * <span class="zh-CN">查询分组列信息构建器实例对象</span>
 	 */
-	public QueryBuilder<P> groupBy(final String tableName, final String columnName) {
-		if (this.groupByColumns.stream().noneMatch(exist -> exist.match(tableName, columnName))) {
-			this.groupByColumns.add(new GroupColumn(tableName, columnName));
+	public QueryBuilder<P> groupBy(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                               @Nonnull final String columnName) {
+		if (this.groupByColumns.stream().noneMatch(exist -> exist.match(databaseName, tableName, columnName))) {
+			this.groupByColumns.add(new GroupColumn(databaseName, tableName, columnName));
 		}
 		return this;
 	}
@@ -170,24 +174,29 @@ public final class QueryBuilder<P extends ParentBuilder> extends AbstractBuilder
 	 * <h3 class="en-US">Query group by information builder</h3>
 	 * <h3 class="zh-CN">查询分组列信息构建器</h3>
 	 *
-	 * @param tableName  <span class="en-US">Data table name</span>
-	 *                   <span class="zh-CN">数据表名</span>
-	 * @param columnName <span class="en-US">Data column name</span>
-	 *                   <span class="zh-CN">数据列名</span>
+	 * @param databaseName <span class="en-US">Database identify information</span>
+	 *                     <span class="zh-CN">数据库识别信息</span>
+	 * @param tableName    <span class="en-US">Data table name</span>
+	 *                     <span class="zh-CN">数据表名</span>
+	 * @param columnName   <span class="en-US">Data column name</span>
+	 *                     <span class="zh-CN">数据列名</span>
+	 * @param orderType    <span class="en-US">Query order type</span>
+	 *                     <span class="zh-CN">查询结果集排序类型</span>
 	 * @return <span class="en-US">Query group by information builder instance object</span>
 	 * <span class="zh-CN">查询分组列信息构建器实例对象</span>
 	 */
-	public QueryBuilder<P> orderBy(final String tableName, final String columnName, final OrderType orderType) {
+	public QueryBuilder<P> orderBy(@Nonnull final String databaseName, @Nonnull final String tableName,
+	                               @Nonnull final String columnName, @Nonnull final OrderType orderType) {
 		AtomicBoolean exist = new AtomicBoolean(false);
 		this.orderByColumns.replaceAll(orderColumn -> {
-			if (orderColumn.match(tableName, columnName)) {
+			if (orderColumn.match(databaseName, tableName, columnName)) {
 				orderColumn.setOrderType(orderType);
 				exist.set(Boolean.TRUE);
 			}
 			return orderColumn;
 		});
 		if (!exist.get()) {
-			this.orderByColumns.add(new OrderColumn(tableName, columnName, orderType));
+			this.orderByColumns.add(new OrderColumn(databaseName, tableName, columnName, orderType));
 		}
 		return this;
 	}
@@ -245,8 +254,8 @@ public final class QueryBuilder<P extends ParentBuilder> extends AbstractBuilder
 	protected void confirm(final Object object) throws BuilderException {
 		if (object instanceof ItemsBuilder.Items) {
 			this.queryItems = ((ItemsBuilder.Items) object).getItemList();
-		} else if (object instanceof BaseFrom) {
-			this.queryFrom = (BaseFrom) object;
+		} else if (object instanceof AbstractFrom) {
+			this.queryFrom = (AbstractFrom) object;
 		} else if (object instanceof ConditionsBuilder.Conditions) {
 			ConditionsBuilder.Conditions conditions = (ConditionsBuilder.Conditions) object;
 			if (conditions.isHaving()) {
